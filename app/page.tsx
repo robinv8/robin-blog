@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { getAllPosts } from '@/lib/notion';
+import { Post } from '@/schema/post';
 import dayjs from 'dayjs';
 
 export default async function Home() {
@@ -64,7 +65,7 @@ export default async function Home() {
             </div>
           )}
 
-          {posts.map((post: any) => (
+          {posts.map((post: Post) => (
             <Link key={post.id} href={`/posts/${post.slug}`} className="block">
               <article className="glass-card p-6 rounded-2xl group cursor-pointer relative overflow-hidden transition-all hover:bg-white/60 dark:hover:bg-slate-800/40">
                 <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

@@ -1,27 +1,20 @@
-export interface Post {
-    id: string;
-    date: number;
-    title?: string;
-    slug?: string;
-    status?: string[];
-    type?: string[];
-    summary?: string;
-    fullWidth?: boolean;
-    [key: string]: any;
-}
+import { Post } from '@/schema/post';
 
 export default function filterPublishedPosts({
     posts,
     onlyNewsletter = false,
     onlyPost = false,
+    onlyPhotography = false,
     onlyHidden = false
 }: {
     posts: Post[] | null;
     onlyNewsletter?: boolean;
     onlyPost?: boolean;
+    onlyPhotography?: boolean;
     onlyHidden?: boolean;
 }) {
     if (!posts || !posts.length) return [];
+    
     return posts
         .filter((post) =>
             onlyNewsletter
@@ -33,17 +26,26 @@ export default function filterPublishedPosts({
                 ? post?.type?.[0] === 'Post'
                 : post
         )
+        .filter((post) => {
+            if (onlyPhotography) {
+                const postType = post?.type?.[0]?.toLowerCase();
+                return postType === 'photography';
+            }
+            return post;
+        })
         .filter((post) =>
             onlyHidden
                 ? post?.type?.[0] === 'Hidden'
                 : post?.type?.[0] !== 'Hidden'
         )
         .filter((post) => {
-            return (
-                post.title &&
-                post.slug &&
-                post?.status?.[0] === 'Published' &&
-                post.date <= Date.now()
-            );
+            const hasTitle = !!post.title;
+            const hasSlug = !!post.slug;
+            const isPublished = post?.status?.[0] === 'Published';
+            // For photography, allow future dates (scheduled posts)
+            // For other types, only show published posts with past dates
+            const dateValid = onlyPhotography ? true : post.date <= Date.now();
+            
+            return hasTitle && hasSlug && isPublished && dateValid;
         });
 }

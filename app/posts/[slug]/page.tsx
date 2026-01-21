@@ -1,6 +1,7 @@
 import React from "react";
 import { NotionRenderer } from "react-notion-x";
 import { getPostBlocks, getAllPosts } from "@/lib/notion";
+import { Post } from "@/schema/post";
 import Header from "../../components/Header";
 import { siteConfig } from "../../../site.config";
 import Comments from "../../components/Comments";
@@ -22,7 +23,7 @@ export default async function BlogPost({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const posts = (await getAllPosts({ onlyPost: true })) as any[];
+  const posts = (await getAllPosts({ onlyPost: true })) as Post[];
   const post = posts?.find((t) => t.slug === slug);
 
   if (!post) {
@@ -86,7 +87,7 @@ export default async function BlogPost({
 
 // Generate static params for cleaner SSG
 export async function generateStaticParams() {
-  const posts = (await getAllPosts({ onlyPost: true })) as any[];
+  const posts = (await getAllPosts({ onlyPost: true })) as Post[];
   return (
     posts?.map((post) => ({
       slug: post.slug,
