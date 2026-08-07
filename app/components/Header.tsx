@@ -37,11 +37,6 @@ export default function Header() {
           <img
             alt="Avatar"
             className="w-full h-full object-cover bg-slate-200"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-3g1EhDHkHHxg5uqtvwsBV3PmqA384USWeo6jxTSUodH06Fc7VXIAQvmdbIO-IqUZ9FnWpKbNNI9n80uP_tNuNQTctUp3fWj9M0RshYLuHNJH6_JEBUZi49lhiKHs7oaLnIz-QT7tsl6Z9YxcutbWMikVyftZ2PmcvIq04_yCfLdwBZ-FkDaayYS0H2Jw_20R8u2aMdsQh_dcLyHQYB89SRDFOBWomrAMn_KTCa6wluCQKPK8og7QfKJC_znNNnx8Fx_YPX_EuxU"
-          />
-          <img
-            alt="Avatar"
-            className="w-full h-full object-cover bg-slate-200"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-3g1EhDHkHHxg5uqtvwsBV3PmqA384USWeo6jxTSUodH06Fc7VXIAQvmdbIO-IqUZ9FnWpKbNNI9n80uP_tNuNQTctUp3fWj9M0RshYLuHNJH6_JEBUZi49lhiKHs7oaLnIz-QT7tsl6Z9YxcutbWMikVyftZ2PmcvIq04_yCfLdwBZ-FkDaayYS0H2Jw_20R8u2aMdsQh_dcLyHQYB89SRDFOBWomrAMn_KTCa6wluCQKPK8og7QfKJC_znNNnx5Fx_YPX_EuxU"
           />
         </div>

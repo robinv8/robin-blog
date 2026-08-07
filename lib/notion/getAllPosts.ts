@@ -174,12 +174,12 @@ export async function getAllPosts({
         const response = await api.getPage(id);
 
         id = idToUuid(id);
-        const collection = Object.values(response.collection)[0]?.value;
+        const collection: any = Object.values(response.collection)[0]?.value;
         const collectionQuery = response.collection_query;
-        const block = response.block;
+        const block: any = response.block;
         const schema = collection?.schema;
 
-        const rawMetadata = block[id].value;
+        const rawMetadata: any = block[id].value;
 
         // Check Type
         if (
