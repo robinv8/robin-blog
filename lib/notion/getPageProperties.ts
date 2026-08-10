@@ -1,5 +1,5 @@
 import { getTextContent, getDateValue } from 'notion-utils';
-import { NotionAPI } from 'notion-client';
+import { createNotionApi } from './api';
 import { siteConfig } from '@/site.config';
 
 // Simple implementation of mapImageUrl if import fails
@@ -25,7 +25,7 @@ export default async function getPageProperties(
     schema: any,
     authToken?: string
 ) {
-    const api = new NotionAPI({ authToken });
+    const api = createNotionApi();
     const rawProperties = Object.entries(block?.[id]?.value?.properties || []);
     const excludeProperties = ['date', 'select', 'multi_select', 'person'];
     const properties: any = {};

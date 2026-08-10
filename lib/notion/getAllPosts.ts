@@ -8,6 +8,7 @@ import { Post } from '@/schema/post';
 import getAllPageIds from './getAllPageIds';
 import getPageProperties from './getPageProperties';
 import filterPublishedPosts from './filterPublishedPosts';
+import { createNotionApi, normalizeRecordMap } from './api';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -167,14 +168,13 @@ export async function getAllPosts({
         return [];
     }
 
-    const authToken = siteConfig.notionAccessToken || undefined;
-    const api = new NotionAPI({ authToken });
+    const api = createNotionApi();
 
     try {
-        const response = await api.getPage(id);
+        const response = normalizeRecordMap(await api.getPage(id));
 
         id = idToUuid(id);
-        const collection: any = Object.values(response.collection)[0]?.value;
+        const collection: any = (Object.values(response.collection) as any[])[0]?.value;
         const collectionQuery = response.collection_query;
         const block: any = response.block;
         const schema = collection?.schema;
