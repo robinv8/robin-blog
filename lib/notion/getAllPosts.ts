@@ -1,5 +1,4 @@
 import { siteConfig } from '@/site.config';
-import { NotionAPI } from 'notion-client';
 import { idToUuid } from 'notion-utils';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -8,7 +7,7 @@ import { Post } from '@/schema/post';
 import getAllPageIds from './getAllPageIds';
 import getPageProperties from './getPageProperties';
 import filterPublishedPosts from './filterPublishedPosts';
-import { createNotionApi, normalizeRecordMap } from './api';
+import { notionGetPage, normalizeRecordMap } from './api';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -32,12 +31,9 @@ function generateSlugFromTitle(title: string): string {
 // Extract first image from Notion page blocks
 // According to Notion official docs: https://developers.notion.com/reference/block
 // Image blocks have image.file.url (for file type) or image.external.url (for external type)
-async function getFirstImageFromPage(
-    pageId: string,
-    api: NotionAPI
-): Promise<string | null> {
+async function getFirstImageFromPage(pageId: string): Promise<string | null> {
     try {
-        const pageData = await api.getPage(pageId);
+        const pageData = await notionGetPage(pageId);
         const blocks = pageData.block;
         
         // Helper function to extract URL from file object
@@ -164,10 +160,8 @@ async function fetchAllPosts(): Promise<Post[]> {
         return [];
     }
 
-    const api = createNotionApi();
-
     try {
-        const response = normalizeRecordMap(await api.getPage(id));
+        const response = normalizeRecordMap(await notionGetPage(id));
 
         id = idToUuid(id);
         const collection: any = (Object.values(response.collection) as any[])[0]?.value;
@@ -226,7 +220,7 @@ async function fetchAllPosts(): Promise<Post[]> {
                     // For photography posts, get first image from page content if no cover image
                     const postType = properties.type?.[0]?.toLowerCase();
                     if (postType === 'photography' && !properties.page_cover) {
-                        const firstImage = await getFirstImageFromPage(id, api);
+                        const firstImage = await getFirstImageFromPage(id);
                         if (firstImage) {
                             properties.page_cover = firstImage;
                             console.log(`[getAllPosts] Found first image for "${properties.title}": ${firstImage.substring(0, 100)}...`);
