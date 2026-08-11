@@ -1,10 +1,29 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "./components/ThemeProvider";
+import { siteConfig } from "../site.config";
 
 export const metadata: Metadata = {
-  title: "robin 的博客 | 记录生活，记录成长",
-  description: "A modern personal blog design",
+  metadataBase: new URL(siteConfig.link),
+  title: {
+    default: "robin 的博客 | 记录生活，记录成长",
+    template: "%s | robin 的博客",
+  },
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  alternates: {
+    types: {
+      "application/rss+xml": `${siteConfig.link}/feed`,
+    },
+  },
+  openGraph: {
+    title: "robin 的博客",
+    description: siteConfig.description,
+    url: siteConfig.link,
+    siteName: siteConfig.title,
+    locale: siteConfig.language,
+    type: "website",
+  },
 };
 
 export default function RootLayout({

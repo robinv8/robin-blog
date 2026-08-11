@@ -51,10 +51,6 @@ export default function Header() {
         <Link href="/" className={getNavLinkClassName("/")}>
           <span className="material-icons-outlined text-base">home</span> 首页
         </Link>
-        <Link href="/weekly" className={getNavLinkClassName("/weekly")}>
-          <span className="material-icons-outlined text-base">article</span>{" "}
-          周刊
-        </Link>
         <Link
           href="/photography"
           className={getNavLinkClassName("/photography")}
@@ -74,9 +70,12 @@ export default function Header() {
           <span className="material-icons-outlined text-base">person</span> 关于
         </Link>
         <div className="w-px h-4 bg-slate-300 dark:bg-slate-700 mx-1"></div>
-        <button className="p-2 text-slate-500 hover:text-primary rounded-full hover:bg-white/30 dark:hover:bg-white/5 transition-all">
+        <Link
+          href="/search"
+          className="p-2 text-slate-500 hover:text-primary rounded-full hover:bg-white/30 dark:hover:bg-white/5 transition-all"
+        >
           <span className="material-icons-outlined text-base">search</span>
-        </button>
+        </Link>
         <button
           className="p-2 text-slate-500 hover:text-primary rounded-full hover:bg-white/30 dark:hover:bg-white/5 transition-all"
           onClick={toggleTheme}

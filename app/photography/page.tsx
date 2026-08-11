@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { getAllPosts } from "@/lib/notion";
@@ -44,7 +45,11 @@ export default async function Photography() {
           )}
 
           {posts.map((post: Post) => (
-            <div key={post.id} className="break-inside-avoid relative group cursor-zoom-in">
+            <Link
+              key={post.id}
+              href={`/photography/${encodeURIComponent(post.slug ?? "")}`}
+              className="break-inside-avoid relative group cursor-pointer block"
+            >
               <div className="glass-card p-1.5 rounded-2xl overflow-hidden transition-all duration-500 group-hover:shadow-2xl">
                 <div className="relative overflow-hidden rounded-xl">
                   {post.page_cover ? (
@@ -72,20 +77,9 @@ export default async function Photography() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </main>
-
-        {posts.length > 0 && (
-          <div className="flex justify-center pb-8">
-            <button className="group flex items-center gap-2 px-8 py-3 rounded-full glass hover:bg-white/80 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300 hover:text-primary transition-all shadow-sm">
-              <span className="text-sm font-medium">Load More Photos</span>
-              <span className="material-icons-outlined text-xl group-hover:rotate-180 transition-transform duration-500">
-                expand_more
-              </span>
-            </button>
-          </div>
-        )}
 
         <Footer />
       </div>

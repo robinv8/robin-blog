@@ -150,17 +150,13 @@ async function getFirstImageFromPage(
     }
 }
 
-export async function getAllPosts({
-    onlyNewsletter = false,
-    onlyPost = false,
-    onlyPhotography = false,
-    onlyHidden = false
-}: {
-    onlyNewsletter?: boolean;
-    onlyPost?: boolean;
-    onlyPhotography?: boolean;
-    onlyHidden?: boolean;
-} = {}): Promise<Post[] | null> {
+// 进程内缓存：一次构建/运行周期内会调用 getAllPosts 几十次，
+// 每次都全量拉 Notion 既慢又容易触发限流（偶发失败后会被静态化烘焙成 404）。
+// 这里缓存未过滤的原始数据，过滤在内存中按需进行。
+const CACHE_TTL = 5 * 60 * 1000;
+let postsCache: { at: number; promise: Promise<Post[]> } | null = null;
+
+async function fetchAllPosts(): Promise<Post[]> {
     let id = siteConfig.notionPageId;
 
     if (!id) {
@@ -187,7 +183,7 @@ export async function getAllPosts({
             rawMetadata?.type !== 'collection_view'
         ) {
             console.log(`pageId '${id}' is not a database`);
-            return null;
+            return [];
         } else {
             // Construct Data
             const pageIds = getAllPageIds(collectionQuery);
@@ -243,24 +239,48 @@ export async function getAllPosts({
                 }
             }
 
-            // remove all the the items doesn't meet requirements
-            const posts = filterPublishedPosts({
-                posts: data,
-                onlyNewsletter,
-                onlyPost,
-                onlyPhotography,
-                onlyHidden
-            });
-
             // Sort by date
             if (siteConfig.sortByDate) {
-                posts.sort((a, b) => b.date - a.date);
+                data.sort((a, b) => b.date - a.date);
             }
-            return posts;
+            return data;
         }
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         console.error(`Failed to get posts from Notion:`, errorMessage);
         return [];
     }
+}
+
+export async function getAllPosts({
+    onlyNewsletter = false,
+    onlyPost = false,
+    onlyPhotography = false,
+    onlyPage = false,
+    onlyHidden = false
+}: {
+    onlyNewsletter?: boolean;
+    onlyPost?: boolean;
+    onlyPhotography?: boolean;
+    onlyPage?: boolean;
+    onlyHidden?: boolean;
+} = {}): Promise<Post[] | null> {
+    if (!postsCache || Date.now() - postsCache.at > CACHE_TTL) {
+        postsCache = { at: Date.now(), promise: fetchAllPosts() };
+    }
+
+    const data = await postsCache.promise;
+    // 缓存失败的结果会导致后续所有页面拿到空数据，遇到失败立即失效
+    if (data.length === 0) {
+        postsCache = null;
+    }
+
+    return filterPublishedPosts({
+        posts: data,
+        onlyNewsletter,
+        onlyPost,
+        onlyPhotography,
+        onlyPage,
+        onlyHidden
+    });
 }

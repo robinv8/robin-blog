@@ -5,12 +5,14 @@ export default function filterPublishedPosts({
     onlyNewsletter = false,
     onlyPost = false,
     onlyPhotography = false,
+    onlyPage = false,
     onlyHidden = false
 }: {
     posts: Post[] | null;
     onlyNewsletter?: boolean;
     onlyPost?: boolean;
     onlyPhotography?: boolean;
+    onlyPage?: boolean;
     onlyHidden?: boolean;
 }) {
     if (!posts || !posts.length) return [];
@@ -33,6 +35,11 @@ export default function filterPublishedPosts({
             }
             return post;
         })
+        .filter((post) =>
+            onlyPage
+                ? post?.type?.[0] === 'Page'
+                : post
+        )
         .filter((post) =>
             onlyHidden
                 ? post?.type?.[0] === 'Hidden'

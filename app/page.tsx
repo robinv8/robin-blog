@@ -3,13 +3,13 @@ import Link from 'next/link';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { getAllPosts } from '@/lib/notion';
+import { getTags } from '@/lib/tags';
 import dayjs from 'dayjs';
 
 const AVATAR_URL =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuCQpjZqhf_Ltlapc9yYFHB5cpNBVBsb7tCd7ood7lXMbiJvNFnVgW34EVixnw2OkuFNiwF6Mr2bLwWeBfQ9Nwuoq5w9VRy6bqo_Qt9RQk2lcPE2dLU9gxeUruyT3z4WYSHqDEw8auF2ldUGm28h4-WruTCOt4hRtuYSCLpnqMvSkmjuQXZUbDBMAzOa313TVtVzoiYxJEYdnnaXdiqYX90GcEZ56YjdXU1qWF4hWj1Lx70Kjh4ZE7Y18bE7MlFiwO-8e2h1lZjI8sI';
 
 const SECTIONS = [
-  { href: '/weekly', icon: 'article', title: '周刊', desc: '每周记录与分享', accent: 'from-blue-500/15 to-cyan-400/10' },
   { href: '/photography', icon: 'photo_camera', title: '摄影', desc: '光影与瞬间', accent: 'from-purple-500/15 to-pink-400/10' },
   { href: '/projects', icon: 'auto_awesome', title: '项目', desc: '做点儿有趣的东西', accent: 'from-amber-500/15 to-orange-400/10' },
   { href: '/books', icon: 'book', title: '书架', desc: '读过的与在读的', accent: 'from-emerald-500/15 to-teal-400/10' },
@@ -18,13 +18,6 @@ const SECTIONS = [
 ];
 
 const MARQUEE_WORDS = ['写作', '摄影', '代码', '阅读', '旅行', '咖啡', '设计', '生活', '成长', '开源'];
-
-function getTags(post: any): string[] {
-  const t = post?.tags ?? post?.tag;
-  if (Array.isArray(t)) return t.filter(Boolean);
-  if (typeof t === 'string') return t.split(',').map((s) => s.trim()).filter(Boolean);
-  return [];
-}
 
 export default async function Home() {
   const posts = (await getAllPosts({ onlyPost: true })) || [];
@@ -43,7 +36,7 @@ export default async function Home() {
     { value: String(posts.length), label: '篇文章' },
     { value: String(allTags.size), label: '个标签' },
     { value: String(years), label: '年创作' },
-    { value: '6', label: '个栏目' },
+    { value: '5', label: '个栏目' },
   ];
 
   return (
@@ -103,14 +96,14 @@ export default async function Home() {
 
             <div className="flex gap-3">
               {[
-                { icon: 'telegram', label: 'Telegram' },
-                { icon: 'alternate_email', label: 'Email' },
-                { icon: 'code', label: 'GitHub' },
-                { icon: 'rss_feed', label: 'RSS' },
+                { icon: 'telegram', label: 'Telegram', href: 'https://t.me/robin_0716' },
+                { icon: 'alternate_email', label: 'Email', href: 'mailto:robin@rnode.me' },
+                { icon: 'code', label: 'GitHub', href: 'https://github.com/robinv8' },
+                { icon: 'rss_feed', label: 'RSS', href: '/feed' },
               ].map((s) => (
                 <a
                   key={s.icon}
-                  href="#"
+                  href={s.href}
                   title={s.label}
                   className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-primary hover:border-primary/40 hover:-translate-y-0.5 transition-all"
                 >

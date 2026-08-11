@@ -1,8 +1,12 @@
 import React from 'react';
+import { notFound } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function Weekly() {
+    // 周刊暂时隐藏，恢复时删掉下一行即可
+    notFound();
+
     return (
         <div className="font-sans antialiased text-slate-800 dark:text-slate-200 min-h-screen relative selection:bg-primary selection:text-white transition-colors duration-300">
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
