@@ -4,7 +4,7 @@ export const siteConfig = {
     email: 'robin@rnode.me',
     description: 'Recording life and growth',
     language: 'zh-CN',
-    link: 'https://blog.rnode.me',
+    link: 'https://robinren.me',
     notionPageId: process.env.NOTION_PAGE_ID || '067dd719a912471ea9a3ac10710e7fdf', // Default to the demo ID if env is missing
     notionAccessToken: process.env.NOTION_ACCESS_TOKEN,
 
