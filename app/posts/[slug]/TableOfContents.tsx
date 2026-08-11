@@ -29,9 +29,9 @@ export default function TableOfContents({
   };
 
   const levelStyles: Record<number, string> = {
-    1: "pl-2 font-medium text-slate-700 dark:text-slate-300",
-    2: "pl-6 text-slate-600 dark:text-slate-400",
-    3: "pl-10 text-xs text-slate-500 dark:text-slate-500",
+    1: "pl-3 font-bold",
+    2: "pl-6",
+    3: "pl-9 text-[10px]",
   };
 
   const scrollTo = (id: string) => {
@@ -42,9 +42,9 @@ export default function TableOfContents({
   };
 
   return (
-    <nav className="glass-card rounded-2xl p-4 max-h-[70vh] overflow-y-auto">
-      <p className="px-2 pb-2 mb-2 text-xs font-semibold tracking-wide text-slate-400 border-b border-slate-200/60 dark:border-slate-700/60">
-        目录
+    <nav className="border border-[#1B1B18]/15 dark:border-[#E8E6DF]/15 p-4 max-h-[70vh] overflow-y-auto">
+      <p className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00] pb-3 mb-2 border-b border-[#1B1B18]/15 dark:border-[#E8E6DF]/15">
+        [ 目录 / TOC ]
       </p>
       {nodes.map((node: any) => {
         const level = getHeaderLevel(node);
@@ -53,7 +53,7 @@ export default function TableOfContents({
             key={node.id}
             onClick={() => scrollTo(node.id)}
             title={node.text}
-            className={`block py-1.5 px-2 cursor-pointer rounded-lg text-sm truncate hover:bg-slate-500/10 hover:text-primary transition-colors ${levelStyles[level] ?? levelStyles[3]}`}
+            className={`block py-1.5 cursor-pointer font-mono text-[11px] tracking-wide truncate text-current/60 hover:text-[#FF4D00] transition-colors ${levelStyles[level] ?? levelStyles[3]}`}
           >
             {node.text}
           </a>

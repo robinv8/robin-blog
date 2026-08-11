@@ -7,6 +7,7 @@ import { getAllPosts, getPostBlocks } from "@/lib/notion";
 import { Post } from "@/schema/post";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { PageShell } from "../../components/Page";
 import { NotionPageRenderer } from "../../components/NotionPageRenderer";
 
 type Props = {
@@ -65,52 +66,34 @@ export default async function PhotographyDetail({ params }: Props) {
   const blockMap = await getPostBlocks(post.id);
 
   return (
-    <div className="font-sans antialiased text-slate-800 dark:text-slate-200 min-h-screen relative selection:bg-primary selection:text-white transition-colors duration-300">
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="light-mesh dark:hidden w-full h-full absolute inset-0"></div>
-        <div className="hidden dark:block w-full h-full absolute inset-0 bg-gradient-to-br from-gray-900 via-slate-900 to-black"></div>
-        <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-60 dark:opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-400/20 rounded-full blur-3xl opacity-60 dark:opacity-10"></div>
-      </div>
+    <PageShell>
+      <Header />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <Header />
-
-        <main className="max-w-4xl mx-auto">
+      <main className="max-w-3xl mx-auto pt-14 md:pt-20">
+        <header className="mb-12 pb-10 border-b border-[#1B1B18]/15 dark:border-[#E8E6DF]/15">
           <Link
             href="/photography"
-            className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-primary transition-colors mb-4"
+            className="u-link font-mono text-[11px] tracking-[0.25em] text-current/50 hover:text-[#FF4D00] transition-colors"
           >
-            <span className="material-icons-outlined text-sm">arrow_back</span>
-            全部摄影
+            ← 全部摄影
           </Link>
+          <p className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00] mt-8 mb-6">
+            [ ALBUM — {dayjs(post.date).format("YYYY.MM.DD")} ]
+          </p>
+          <h1 className="font-serif-sc font-black text-3xl md:text-5xl leading-tight tracking-tight">
+            {post.title}
+          </h1>
+          {post.summary && (
+            <p className="mt-6 text-sm leading-loose text-current/60 max-w-xl">{post.summary}</p>
+          )}
+        </header>
 
-          <article className="glass-card p-6 md:p-10 rounded-3xl relative overflow-hidden mb-8">
-            <header className="mb-8 border-b border-slate-200/60 dark:border-slate-700/60 pb-8">
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-slate-100 leading-tight">
-                {post.title}
-              </h1>
-              <div className="flex items-center gap-3 mt-4">
-                <time className="text-xs text-slate-400 font-mono flex items-center gap-1">
-                  <span className="material-icons-outlined text-sm">calendar_today</span>
-                  {dayjs(post.date).format("MMM D, YYYY")}
-                </time>
-                {post.summary && (
-                  <span className="text-xs text-slate-500 dark:text-slate-400">
-                    {post.summary}
-                  </span>
-                )}
-              </div>
-            </header>
+        <article className="notion-content pb-8">
+          <NotionPageRenderer recordMap={blockMap} />
+        </article>
+      </main>
 
-            <div className="notion-content">
-              <NotionPageRenderer recordMap={blockMap} />
-            </div>
-          </article>
-        </main>
-
-        <Footer />
-      </div>
-    </div>
+      <Footer />
+    </PageShell>
   );
 }

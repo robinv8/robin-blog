@@ -6,5 +6,14 @@ export const metadata: Metadata = {
 };
 
 export default function FriendsPage() {
-  return <NotionContentPage slug="friends" />;
+  return (
+    <NotionContentPage
+      slug="friends"
+      no="06"
+      zh="友链"
+      en="FRIENDS"
+      desc="朋友们的站点。"
+      descEn="Sites of my friends."
+    />
+  );
 }

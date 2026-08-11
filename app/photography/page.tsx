@@ -1,88 +1,71 @@
-import React from "react";
-import Link from "next/link";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { getAllPosts } from "@/lib/notion";
-import { Post } from "@/schema/post";
+import React from 'react';
+import Link from 'next/link';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import Reveal from '../components/Reveal';
+import { PageShell, PageHero } from '../components/Page';
+import { T } from '../components/LangProvider';
+import { getAllPosts } from '@/lib/notion';
+import { Post } from '@/schema/post';
+import dayjs from 'dayjs';
 
 export default async function Photography() {
-  const posts = await getAllPosts({ onlyPhotography: true }) || [];
+  const posts = (await getAllPosts({ onlyPhotography: true })) || [];
 
   return (
-    <div className="font-sans antialiased text-slate-800 dark:text-slate-200 min-h-screen relative selection:bg-primary selection:text-white transition-colors duration-300">
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="light-mesh dark:hidden w-full h-full absolute inset-0"></div>
-        <div className="hidden dark:block w-full h-full absolute inset-0 bg-gradient-to-br from-gray-900 via-slate-900 to-black"></div>
-        <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-60 dark:opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-400/20 rounded-full blur-3xl opacity-60 dark:opacity-10"></div>
-      </div>
+    <PageShell>
+      <Header />
+      <PageHero
+        no="02"
+        zh="光影集"
+        en="PHOTOGRAPHY"
+        desc="用镜头探索世界，把瞬间装订成册。这里是光影的碎片与被时间冻结的记忆。"
+        descEn="A collection of visual stories, fragments of light, and memories frozen in time."
+      />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <Header />
-
-        <section className="mb-12 text-center md:text-left md:flex justify-between items-end">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-500 dark:from-white dark:to-slate-400">
-              Captured Moments
-            </h2>
-            <p className="text-slate-600 dark:text-slate-400 max-w-xl text-sm md:text-base leading-relaxed">
-              A collection of visual stories, fragments of light, and memories
-              frozen in time. Exploring the world through the lens.
-            </p>
+      <main className="columns-1 sm:columns-2 md:columns-3 gap-6 space-y-6 pb-12">
+        {posts.length === 0 && (
+          <div className="text-center py-20 text-current/50 col-span-full">
+            <p className="font-mono text-xs tracking-[0.2em]"><T zh="暂无照片 — 请检查 NOTION 配置" en="NO PHOTOS FOUND — PLEASE CHECK NOTION CONFIG" /></p>
           </div>
-          <div className="mt-6 md:mt-0 flex gap-2 overflow-x-auto no-scrollbar pb-1">
-            <button className="px-4 py-1.5 rounded-full bg-white dark:bg-white/10 text-primary border border-primary/20 text-xs font-medium shadow-sm whitespace-nowrap">
-              All Photos
-            </button>
-          </div>
-        </section>
+        )}
 
-        <main className="columns-1 sm:columns-2 md:columns-3 gap-6 space-y-6 pb-12">
-          {posts.length === 0 && (
-            <div className="text-center py-20 text-slate-500 col-span-full">
-              <p>No photos found. Please check your Notion configuration.</p>
-            </div>
-          )}
-
-          {posts.map((post: Post) => (
-            <Link
-              key={post.id}
-              href={`/photography/${encodeURIComponent(post.slug ?? "")}`}
-              className="break-inside-avoid relative group cursor-pointer block"
-            >
-              <div className="glass-card p-1.5 rounded-2xl overflow-hidden transition-all duration-500 group-hover:shadow-2xl">
-                <div className="relative overflow-hidden rounded-xl">
-                  {post.page_cover ? (
-                    <img
-                      alt={post.title || "Photography"}
-                      className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-110"
-                      src={post.page_cover}
-                    />
-                  ) : (
-                    <div className="w-full h-48 bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
-                      <span className="material-icons-outlined text-4xl text-slate-400">image</span>
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                    <h3 className="text-white font-medium text-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      {post.title || "Untitled"}
-                    </h3>
-                    <div className="flex justify-between items-center mt-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                      {post.summary && (
-                        <span className="text-white/80 text-xs font-mono">
-                          {post.summary}
-                        </span>
-                      )}
-                    </div>
+        {posts.map((post: Post, i: number) => (
+          <Reveal key={post.id} delay={(i % 3) * 80} className="break-inside-avoid">
+            <Link href={`/photography/${encodeURIComponent(post.slug ?? '')}`} className="block group cursor-pointer border border-[#1B1B18]/20 dark:border-[#E8E6DF]/20 p-1.5 hover:border-[#FF4D00] transition-colors">
+              <div className="relative overflow-hidden">
+                {post.page_cover ? (
+                  <img
+                    alt={post.title || 'Photography'}
+                    className="w-full h-auto object-cover grayscale-[25%] group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-500"
+                    src={post.page_cover}
+                  />
+                ) : (
+                  <div className="w-full h-48 bg-[#1B1B18]/5 dark:bg-[#E8E6DF]/5 flex items-center justify-center">
+                    <span className="font-mono text-[10px] tracking-[0.3em] text-current/30">NO IMAGE</span>
                   </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                  <h3 className="font-serif-sc font-bold text-[#FAFAF6] text-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    {post.title || 'Untitled'}
+                  </h3>
+                  {post.summary && (
+                    <p className="font-mono text-[10px] tracking-wider text-[#FAFAF6]/70 mt-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                      {post.summary}
+                    </p>
+                  )}
                 </div>
               </div>
             </Link>
-          ))}
-        </main>
+            <p className="mt-2 font-mono text-[9px] tracking-[0.2em] text-current/35 flex justify-between">
+              <span>FIG.{String(i + 1).padStart(2, '0')}</span>
+              {post.date && <span>{dayjs(post.date).format('YYYY.MM.DD')}</span>}
+            </p>
+          </Reveal>
+        ))}
+      </main>
 
-        <Footer />
-      </div>
-    </div>
+      <Footer />
+    </PageShell>
   );
 }

@@ -6,5 +6,14 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
-  return <NotionContentPage slug="projects" />;
+  return (
+    <NotionContentPage
+      slug="projects"
+      no="03"
+      zh="项目"
+      en="WORKS"
+      desc="做点儿有趣的东西。"
+      descEn="Things I have built for fun."
+    />
+  );
 }

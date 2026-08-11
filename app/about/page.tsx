@@ -6,5 +6,14 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  return <NotionContentPage slug="about" />;
+  return (
+    <NotionContentPage
+      slug="about"
+      no="05"
+      zh="关于"
+      en="ABOUT"
+      desc="认识一下我。"
+      descEn="A little bit about me."
+    />
+  );
 }

@@ -1,102 +1,50 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import ThemeToggle from "./ThemeToggle";
+import { LangToggle, useLang } from "./LangProvider";
+
+const NAV = [
+  { href: "/", zh: "首页", en: "HOME" },
+  { href: "/photography", zh: "摄影", en: "PHOTOS" },
+  { href: "/projects", zh: "项目", en: "WORKS" },
+  { href: "/about", zh: "关于", en: "ABOUT" },
+];
 
 export default function Header() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
-  const getNavLinkClassName = (path: string) => {
-    const isActive = pathname === path;
-    const baseClasses =
-      "px-4 py-2 text-xs sm:text-sm font-medium rounded-full transition-all flex items-center gap-2";
-
-    if (isActive) {
-      return `${baseClasses} text-slate-700 dark:text-slate-200 bg-white/50 dark:bg-white/10 shadow-sm hover:text-primary transition-colors`;
-    }
-
-    return `${baseClasses} text-slate-600 dark:text-slate-400 hover:bg-white/30 dark:hover:bg-white/5 hover:text-primary`;
-  };
+  const { lang } = useLang();
 
   return (
-    <header className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-white/50 dark:ring-white/10 shadow-sm">
-          <img
-            alt="Avatar"
-            className="w-full h-full object-cover bg-slate-200"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-3g1EhDHkHHxg5uqtvwsBV3PmqA384USWeo6jxTSUodH06Fc7VXIAQvmdbIO-IqUZ9FnWpKbNNI9n80uP_tNuNQTctUp3fWj9M0RshYLuHNJH6_JEBUZi49lhiKHs7oaLnIz-QT7tsl6Z9YxcutbWMikVyftZ2PmcvIq04_yCfLdwBZ-FkDaayYS0H2Jw_20R8u2aMdsQh_dcLyHQYB89SRDFOBWomrAMn_KTCa6wluCQKPK8og7QfKJC_znNNnx5Fx_YPX_EuxU"
-          />
-        </div>
-        <h1 className="text-sm font-medium tracking-wide text-slate-700 dark:text-slate-300">
-          robin 的博客 <span className="mx-2 text-slate-400">|</span>{" "}
-          <span className="text-slate-500 dark:text-slate-400">
-            记录生活，记录成长
-          </span>
-        </h1>
-      </div>
-      <nav className="glass rounded-full px-1 py-1 flex items-center shadow-sm">
-        <Link href="/" className={getNavLinkClassName("/")}>
-          <span className="material-icons-outlined text-base">home</span> 首页
-        </Link>
-        <Link
-          href="/photography"
-          className={getNavLinkClassName("/photography")}
-        >
-          <span className="material-icons-outlined text-base">
-            photo_camera
-          </span>{" "}
-          摄影
-        </Link>
-        <Link href="/projects" className={getNavLinkClassName("/projects")}>
-          <span className="material-icons-outlined text-base">
-            auto_awesome
-          </span>{" "}
-          项目
-        </Link>
-        <Link href="/about" className={getNavLinkClassName("/about")}>
-          <span className="material-icons-outlined text-base">person</span> 关于
-        </Link>
-        <div className="w-px h-4 bg-slate-300 dark:bg-slate-700 mx-1"></div>
+    <header className="flex items-center justify-between py-5 border-b border-[#1B1B18]/15 dark:border-[#E8E6DF]/15">
+      <Link href="/" className="font-mono text-xs tracking-[0.25em] font-bold">
+        ROBIN<span className="text-[#FF4D00]">®</span> BLOG
+      </Link>
+      <nav className="flex items-center gap-5 md:gap-7">
+        {NAV.map((n) => {
+          const active = pathname === n.href;
+          return (
+            <Link
+              key={n.href}
+              href={n.href}
+              className={`u-link font-mono text-[11px] tracking-[0.2em] transition-colors ${
+                active ? "text-[#FF4D00] font-bold" : "text-current/60 hover:text-current"
+              }`}
+            >
+              {lang === "en" ? n.en : n.zh}
+            </Link>
+          );
+        })}
         <Link
           href="/search"
-          className="p-2 text-slate-500 hover:text-primary rounded-full hover:bg-white/30 dark:hover:bg-white/5 transition-all"
+          aria-label={lang === "en" ? "Search" : "搜索"}
+          className="u-link font-mono text-[11px] tracking-[0.2em] text-current/60 hover:text-current transition-colors"
         >
-          <span className="material-icons-outlined text-base">search</span>
+          {lang === "en" ? "SEARCH" : "搜索"}
         </Link>
-        <button
-          className="p-2 text-slate-500 hover:text-primary rounded-full hover:bg-white/30 dark:hover:bg-white/5 transition-all"
-          onClick={toggleTheme}
-        >
-          {mounted && (
-            <>
-              {theme === "dark" ? (
-                <span className="material-icons-outlined text-base">
-                  light_mode
-                </span>
-              ) : (
-                <span className="material-icons-outlined text-base">
-                  dark_mode
-                </span>
-              )}
-            </>
-          )}
-          {!mounted && (
-            <span className="material-icons-outlined text-base">dark_mode</span>
-          )}
-        </button>
+        <LangToggle />
+        <ThemeToggle />
       </nav>
     </header>
   );

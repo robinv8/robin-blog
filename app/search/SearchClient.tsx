@@ -5,78 +5,69 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import { Post } from "@/schema/post";
 import { getTags } from "@/lib/tags";
+import { postsForLang } from "@/lib/i18n";
+import { useLang } from "../components/LangProvider";
 
 export default function SearchClient({ posts }: { posts: Post[] }) {
   const [keyword, setKeyword] = useState("");
+  const { lang } = useLang();
+  const langPosts = useMemo(() => postsForLang(posts, lang), [posts, lang]);
 
   const results = useMemo(() => {
     const k = keyword.trim().toLowerCase();
-    if (!k) return posts;
-    return posts.filter((post) => {
+    if (!k) return langPosts;
+    return langPosts.filter((post) => {
       const inTitle = post.title?.toLowerCase().includes(k);
       const inSummary = post.summary?.toLowerCase().includes(k);
       const inTags = getTags(post).some((t) => t.toLowerCase().includes(k));
       return inTitle || inSummary || inTags;
     });
-  }, [keyword, posts]);
+  }, [keyword, langPosts]);
 
   return (
-    <div>
-      <div className="relative mb-8">
-        <span className="material-icons-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-400">
-          search
-        </span>
-        <input
-          type="text"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          placeholder="搜索文章标题、摘要或标签…"
-          autoFocus
-          className="w-full glass-card rounded-full pl-14 pr-6 py-4 text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow"
-        />
-      </div>
+    <div className="pb-12">
+      <input
+        type="text"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        placeholder={lang === "en" ? "SEARCH TITLE, SUMMARY OR TAG…" : "搜索文章标题、摘要或标签…"}
+        autoFocus
+        className="w-full bg-transparent border-b-2 border-[#1B1B18] dark:border-[#E8E6DF] focus:border-[#FF4D00] dark:focus:border-[#FF4D00] outline-none font-serif-sc font-bold text-2xl md:text-3xl py-4 mb-4 placeholder:text-current/25 transition-colors"
+      />
 
-      <p className="text-xs text-slate-400 mb-4 font-mono">
-        {results.length} 篇文章
+      <p className="font-mono text-[10px] tracking-[0.25em] text-current/40 mb-6">
+        [ {results.length} {lang === "en" ? "POSTS" : "篇文章"} ]
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {results.map((post) => (
-          <Link key={post.id} href={`/posts/${post.slug}`} className="block group">
-            <article className="glass-card p-6 rounded-2xl h-full relative overflow-hidden transition-all hover:border-primary/30 hover:bg-white/60 dark:hover:bg-slate-800/40">
-              <div className="flex flex-wrap gap-2 mb-3">
-                {getTags(post).slice(0, 2).map((t) => (
-                  <span
-                    key={t}
-                    className="px-2 py-0.5 rounded-full bg-slate-500/10 text-slate-500 dark:text-slate-400 text-[11px] font-medium"
-                  >
-                    #{t}
-                  </span>
-                ))}
-              </div>
-              <h4 className="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100 group-hover:text-primary transition-colors mb-2 leading-snug">
-                {post.title}
-              </h4>
-              {post.summary && (
-                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2 mb-4">
-                  {post.summary}
-                </p>
-              )}
-              {post.date && (
-                <time className="text-xs text-slate-400 font-mono">
-                  {dayjs(post.date).format("MMM D, YYYY")}
-                </time>
-              )}
-            </article>
-          </Link>
-        ))}
-      </div>
+      {results.map((post) => (
+        <Link
+          key={post.id}
+          href={`/posts/${post.slug}`}
+          className="group grid grid-cols-[auto_1fr_auto] items-baseline gap-4 md:gap-8 py-5 border-b border-[#1B1B18]/10 dark:border-[#E8E6DF]/10 -mx-3 px-3 transition-colors duration-200 hover:bg-[#FF4D00]"
+        >
+          <span className="font-mono text-[10px] tracking-[0.2em] text-current/40 group-hover:text-[#FAFAF6]/70 transition-colors">
+            {dayjs(post.date).format("YYYY.MM.DD")}
+          </span>
+          <span className="min-w-0">
+            <h4 className="font-serif-sc font-bold text-base md:text-xl leading-snug group-hover:text-[#FAFAF6] transition-colors truncate">
+              {post.title}
+            </h4>
+            {post.summary && (
+              <p className="text-xs text-current/45 group-hover:text-[#FAFAF6]/70 line-clamp-1 mt-1.5 transition-colors">
+                {post.summary}
+              </p>
+            )}
+          </span>
+          <span className="font-mono text-[10px] tracking-[0.2em] text-current/30 group-hover:text-[#FAFAF6] transition-colors">
+            →
+          </span>
+        </Link>
+      ))}
 
       {results.length === 0 && (
-        <div className="text-center py-20 text-slate-400">
-          <span className="material-icons-outlined text-5xl mb-4 block">search_off</span>
-          <p className="text-sm">没有找到与「{keyword}」相关的文章</p>
-        </div>
+        <p className="font-mono text-xs tracking-[0.2em] text-current/50 py-16 text-center">
+          {lang === "en" ? `NO RESULTS FOR "${keyword}"` : `没有找到与「${keyword}」相关的文章`}
+        </p>
       )}
     </div>
   );

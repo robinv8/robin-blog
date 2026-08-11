@@ -6,5 +6,14 @@ export const metadata: Metadata = {
 };
 
 export default function BooksPage() {
-  return <NotionContentPage slug="books" />;
+  return (
+    <NotionContentPage
+      slug="books"
+      no="04"
+      zh="书架"
+      en="BOOKSHELF"
+      desc="读过的与在读的。"
+      descEn="Books I have read and am reading."
+    />
+  );
 }
