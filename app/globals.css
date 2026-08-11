@@ -246,3 +246,9 @@ body {
 .char-lift:hover {
   color: var(--char-hover, #FF4D00);
 }
+
+/* 隐藏 react-notion-x 渲染数据库行时带出的属性面板（状态/标签/类型等），
+   这些信息页面头部已自行展示；!important 用于压过后加载的 react-notion-x 样式 */
+.notion-collection-page-properties {
+  display: none !important;
+}

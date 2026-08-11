@@ -136,6 +136,12 @@ export default function HomeClient({ posts, since }: { posts: Post[]; since: str
                 {lang === 'en' ? n.en : n.zh}
               </Link>
             ))}
+            <Link
+              href="/search"
+              className="u-link font-mono text-[11px] tracking-[0.2em] text-current/60 hover:text-current transition-colors"
+            >
+              {lang === 'en' ? 'SEARCH' : '搜索'}
+            </Link>
             <LangToggle />
             <ThemeToggle />
           </nav>
