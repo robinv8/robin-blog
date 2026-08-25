@@ -25,6 +25,30 @@ export type TokenUsageFile = {
   months: TokenUsageMonth[];
 };
 
+function stripJsonFences(raw: string): string {
+  const trimmed = raw.trim();
+  const fenced = trimmed.match(/^```(?:json)?\s*\r?\n?([\s\S]*?)\r?\n?```$/i);
+  return fenced ? fenced[1].trim() : trimmed;
+}
+
+/**
+ * Accept a TokenUsageFile object or a JSON string (optionally fenced).
+ * Same shape loadTokenUsage expects: an object with a months array.
+ */
+export function parseTokenUsageFile(raw: unknown): TokenUsageFile | null {
+  let data: unknown = raw;
+  if (typeof raw === "string") {
+    try {
+      data = JSON.parse(stripJsonFences(raw));
+    } catch {
+      return null;
+    }
+  }
+  if (!data || typeof data !== "object") return null;
+  if (!Array.isArray((data as { months?: unknown }).months)) return null;
+  return data as TokenUsageFile;
+}
+
 /** Compact token counts: 182748 → 183K, 138266509 → 138M, 3308370680 → 3.31B */
 export function formatTokens(n: number): string {
   const sign = n < 0 ? "-" : "";
