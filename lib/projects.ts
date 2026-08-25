@@ -4,7 +4,7 @@ export type Work = {
   id: string;
   zh: string;
   en: string;
-  /** Optional mono tag shown in both languages, e.g. brain.md */
+  /** Optional mono tag shown in both languages, e.g. a short alias */
   aka?: string;
   url?: string;
   descZh: string;
@@ -66,15 +66,6 @@ export const WORKS: Work[] = [
     descZh: "大文件 / 扫描件转 Markdown。",
     descEn: "Large files and scans to Markdown.",
     status: "live",
-  },
-  {
-    id: "mindmux",
-    zh: "MindMux",
-    en: "MindMux",
-    aka: "brain.md",
-    descZh: "本地知识中间件，以及 brain.md 规范。",
-    descEn: "Local knowledge middleware, and the brain.md standard.",
-    status: "local",
   },
   {
     id: "project-prompt",
