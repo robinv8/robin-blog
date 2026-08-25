@@ -252,3 +252,60 @@ body {
 .notion-collection-page-properties {
   display: none !important;
 }
+
+/* Token-use dashboard — scoped; do not reuse on other pages */
+.token-dash {
+  --td-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.token-dash::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image:
+    linear-gradient(to right, currentColor 1px, transparent 1px),
+    linear-gradient(to bottom, currentColor 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), transparent 92%);
+}
+
+.token-dash [data-bar],
+.token-dash [data-rule] {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.token-dash.is-on [data-bar] {
+  animation: token-dash-bar 1.2s var(--td-ease) both;
+}
+
+.token-dash.is-on [data-rule] {
+  animation: token-dash-bar 1s var(--td-ease) both;
+}
+
+@keyframes token-dash-bar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes token-dash-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.28; }
+}
+
+.token-dash [data-pulse] {
+  animation: token-dash-breathe 3.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .token-dash [data-bar],
+  .token-dash [data-rule] {
+    animation: none !important;
+    transform: none;
+  }
+  .token-dash [data-pulse] {
+    animation: none !important;
+  }
+}
