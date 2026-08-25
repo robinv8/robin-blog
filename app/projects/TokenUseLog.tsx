@@ -137,13 +137,13 @@ function CountUp({
 
   useEffect(() => {
     if (!active) return;
-    if (reduced) {
-      setDisplay(format(value));
-      return;
-    }
     let raf = 0;
     const t0 = performance.now();
     const tick = (now: number) => {
+      if (reduced) {
+        setDisplay(format(value));
+        return;
+      }
       const t = Math.min(1, (now - t0) / duration);
       const current = t === 1 ? value : value * easeOutExpo(t);
       setDisplay(format(current));
