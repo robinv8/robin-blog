@@ -7,6 +7,10 @@ export const siteConfig = {
     link: 'https://robinren.me',
     notionPageId: process.env.NOTION_PAGE_ID || '067dd719a912471ea9a3ac10710e7fdf', // Default to the demo ID if env is missing
     notionAccessToken: process.env.NOTION_ACCESS_TOKEN,
+    // Hidden Token Use page in the Blogs database (type Hidden, slug token-use).
+    // Must never appear in post/page/photography listings. Set NOTION_TOKEN_USE_PAGE_ID
+    // on the host; if unset, /projects falls back to public/data/token-usage.json.
+    notionTokenUsePageId: process.env.NOTION_TOKEN_USE_PAGE_ID,
 
     // SEO
     keywords: ['Blog', 'Tech', 'Life'],

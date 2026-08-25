@@ -20,7 +20,7 @@ const COPY = {
   zh: {
     source: "来源",
     updated: "更新",
-    intro: "本地会话经 ccusage 汇总。尚未自动刷新。",
+    intro: "本地会话经 ccusage 汇总，由 Notion 作为实时来源。仍为估算。",
     caption:
       "费用为公开价估算，不是账单。Cache Read 计入合计。Grok 会话文件是累计值，ccusage 可能偏大。",
     agent: "智能体",
@@ -44,7 +44,7 @@ const COPY = {
   en: {
     source: "SOURCE",
     updated: "UPDATED",
-    intro: "Aggregated from local sessions via ccusage. Not auto-refreshed yet.",
+    intro: "Aggregated from local sessions via ccusage, with Notion as the live source. Still an estimate.",
     caption:
       "Cost is a public-price estimate, not an invoice. Cache reads are included in totals. Grok session files store cumulative usage, so ccusage may over-count.",
     agent: "AGENT",

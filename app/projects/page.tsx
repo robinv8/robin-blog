@@ -6,6 +6,8 @@ import { loadTokenUsage } from "@/lib/token-usage";
 import WorksList from "./WorksList";
 import TokenUseLog from "./TokenUseLog";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "项目",
   description: "做点儿有趣的东西。",
