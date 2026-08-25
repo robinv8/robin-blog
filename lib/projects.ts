@@ -4,6 +4,8 @@ export type Work = {
   id: string;
   zh: string;
   en: string;
+  /** Optional mono tag shown in both languages, e.g. brain.md */
+  aka?: string;
   url?: string;
   descZh: string;
   descEn: string;
@@ -69,6 +71,7 @@ export const WORKS: Work[] = [
     id: "mindmux",
     zh: "MindMux",
     en: "MindMux",
+    aka: "brain.md",
     descZh: "本地知识中间件，以及 brain.md 规范。",
     descEn: "Local knowledge middleware, and the brain.md standard.",
     status: "local",

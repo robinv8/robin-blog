@@ -10,7 +10,7 @@ import {
   formatUpdatedAt,
   type TokenUsageFile,
   type TokenUsageMonth,
-} from "@/lib/token-usage";
+} from "@/lib/token-usage-format";
 
 const COPY = {
   zh: {
@@ -76,7 +76,9 @@ function MonthTable({ month, isEn }: { month: TokenUsageMonth; isEn: boolean }) 
         <table className="w-full min-w-[40rem] text-left font-mono text-[11px] tracking-wider">
           <thead>
             <tr className="border-b border-[#1B1B18]/15 dark:border-[#E8E6DF]/15 text-current/40">
-              <th className="px-4 py-3 font-normal">{S.agent}</th>
+              <th className="sticky left-0 z-10 bg-[#FAFAF6] dark:bg-[#131311] px-4 py-3 font-normal">
+                {S.agent}
+              </th>
               <th className="px-4 py-3 font-normal text-right">{S.input}</th>
               <th className="px-4 py-3 font-normal text-right">{S.output}</th>
               <th className="px-4 py-3 font-normal text-right">{S.cacheRead}</th>
@@ -91,7 +93,7 @@ function MonthTable({ month, isEn }: { month: TokenUsageMonth; isEn: boolean }) 
                 className="border-b border-[#1B1B18]/10 dark:border-[#E8E6DF]/10 last:border-0"
               >
                 <td
-                  className={`px-4 py-3 ${
+                  className={`sticky left-0 z-10 bg-[#FAFAF6] dark:bg-[#131311] px-4 py-3 ${
                     row.strong ? "text-[#FF4D00] font-bold" : "text-current/80"
                   }`}
                 >

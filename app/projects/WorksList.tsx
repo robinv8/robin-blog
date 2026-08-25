@@ -31,9 +31,9 @@ function WorkRow({ work, index }: { work: Work; index: number }) {
           <h3 className="font-serif-sc font-bold text-xl md:text-2xl group-hover:text-[#FAFAF6] group-hover:translate-x-1 transition-all">
             {title}
           </h3>
-          {showLabel && (
+          {(showLabel || work.aka) && (
             <span className="font-mono text-[10px] tracking-[0.25em] text-current/35 group-hover:text-[#FAFAF6]/60 transition-colors">
-              {label}
+              {[showLabel ? label : null, work.aka].filter(Boolean).join(" · ")}
             </span>
           )}
         </div>
