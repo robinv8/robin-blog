@@ -3,21 +3,15 @@
 import React from 'react';
 import Link from 'next/link';
 import Reveal from './Reveal';
-import ThemeToggle from './ThemeToggle';
 import CustomCursor from './CustomCursor';
 import ScrollProgress from './ScrollProgress';
-import { LangToggle, useLang } from './LangProvider';
+import Header from './Header';
+import { useLang } from './LangProvider';
 import { getPostLang, postsForLang } from '@/lib/i18n';
 import type { Post } from '@/schema/post';
 import dayjs from 'dayjs';
 
 const ACCENT = '#FF4D00';
-
-const NAV = [
-  { href: '/photography', zh: '摄影', en: 'PHOTOS' },
-  { href: '/projects', zh: '项目', en: 'WORKS' },
-  { href: '/about', zh: '关于', en: 'ABOUT' },
-];
 
 const SECTIONS = [
   { no: '01', href: '/photography', zh: '摄影', en: 'PHOTOGRAPHY', descZh: '光影与瞬间', descEn: 'Light & moments' },
@@ -121,31 +115,7 @@ export default function HomeClient({ posts, since }: { posts: Post[]; since: str
 
       <div className="max-w-6xl mx-auto px-6 md:px-10">
 
-        {/* ============ TOP BAR ============ */}
-        <header className="flex items-center justify-between py-5 border-b border-[#1B1B18]/15 dark:border-[#E8E6DF]/15">
-          <Link href="/" className="font-mono text-xs tracking-[0.25em] font-bold">
-            ROBIN<span style={{ color: ACCENT }}>®</span> BLOG
-          </Link>
-          <nav className="flex items-center gap-5 md:gap-7">
-            {NAV.map((n) => (
-              <Link
-                key={n.href}
-                href={n.href}
-                className="u-link font-mono text-[11px] tracking-[0.2em] text-current/60 hover:text-current transition-colors"
-              >
-                {lang === 'en' ? n.en : n.zh}
-              </Link>
-            ))}
-            <Link
-              href="/search"
-              className="u-link font-mono text-[11px] tracking-[0.2em] text-current/60 hover:text-current transition-colors"
-            >
-              {lang === 'en' ? 'SEARCH' : '搜索'}
-            </Link>
-            <LangToggle />
-            <ThemeToggle />
-          </nav>
-        </header>
+        <Header includeHome={false} />
 
         {/* ============ HERO ============ */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 pt-16 md:pt-24 pb-16">
