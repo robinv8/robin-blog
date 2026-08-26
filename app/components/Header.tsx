@@ -90,7 +90,7 @@ export default function Header({ includeHome = true }: { includeHome?: boolean }
                   : "打开菜单"
             }
             onClick={() => setOpen((v) => !v)}
-            className={`relative flex h-10 w-10 items-center justify-center font-mono text-[11px] tracking-[0.2em] transition-colors ${
+            className={`relative flex h-10 w-10 items-center justify-center transition-colors focus-visible:outline-none focus-visible:text-[#FF4D00] ${
               open ? "text-[#FF4D00]" : "text-current/60 hover:text-current"
             }`}
           >
