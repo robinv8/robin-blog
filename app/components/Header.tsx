@@ -8,7 +8,6 @@ import { LangToggle, useLang } from "./LangProvider";
 
 const NAV = [
   { href: "/", zh: "首页", en: "HOME" },
-  { href: "/photography", zh: "摄影", en: "PHOTOS" },
   { href: "/projects", zh: "项目", en: "WORKS" },
   { href: "/about", zh: "关于", en: "ABOUT" },
 ];
