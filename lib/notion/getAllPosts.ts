@@ -1,5 +1,6 @@
 import { siteConfig } from '@/site.config';
-import { idToUuid } from 'notion-utils';
+import { defaultMapImageUrl, idToUuid } from 'notion-utils';
+import type { Block } from 'notion-types';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
@@ -65,7 +66,12 @@ async function getFirstImageFromPage(pageId: string): Promise<string | null> {
         for (const [, block] of blockEntries) {
             if (!block || typeof block !== 'object') continue;
             
-            const blockValue = (block as { value?: unknown })?.value;
+            const outer = (block as { value?: unknown })?.value;
+            // Newer notion-client responses nest the block one level deeper: { value: { value, role } }
+            const blockValue =
+                outer && typeof outer === 'object' && !('type' in outer) && 'value' in outer
+                    ? (outer as { value?: unknown }).value
+                    : outer;
             if (!blockValue || typeof blockValue !== 'object') continue;
             
             const typedBlock = blockValue as {
@@ -107,6 +113,11 @@ async function getFirstImageFromPage(pageId: string): Promise<string | null> {
                         if (typeof sourceValue === 'string' && 
                             (sourceValue.startsWith('http://') || sourceValue.startsWith('https://'))) {
                             return sourceValue;
+                        }
+                        // Uploaded files: signed S3 URLs expire, so go through Notion's image proxy
+                        if (typeof sourceValue === 'string' && sourceValue.startsWith('attachment:')) {
+                            const url = defaultMapImageUrl(sourceValue, blockValue as Block);
+                            if (url) return url;
                         }
                     }
                     

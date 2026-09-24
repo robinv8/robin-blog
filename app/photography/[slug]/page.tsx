@@ -1,11 +1,10 @@
-import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import dayjs from "dayjs";
 import { getAllPosts, getPostBlocks } from "@/lib/notion";
 import { Post } from "@/schema/post";
-import Header from "../../components/Header";
+import SiteHeader from "../../components/Header";
 import Footer from "../../components/Footer";
 import { PageShell } from "../../components/Page";
 import { NotionPageRenderer } from "../../components/NotionPageRenderer";
@@ -67,25 +66,16 @@ export default async function PhotographyDetail({ params }: Props) {
 
   return (
     <PageShell>
-      <Header />
+      <SiteHeader />
 
-      <main className="max-w-3xl mx-auto pt-14 md:pt-20">
-        <header className="mb-12 pb-10 border-b border-[#1B1B18]/15 dark:border-[#E8E6DF]/15">
-          <Link
-            href="/photography"
-            className="u-link font-mono text-[11px] tracking-[0.25em] text-current/50 hover:text-[#FF4D00] transition-colors"
-          >
-            ← 全部摄影
+      <main className="mx-auto max-w-3xl pt-14 md:pt-20">
+        <header className="mb-12 border-b border-bl-line pb-10">
+          <Link href="/photography" className="font-mono text-xs text-bl-muted transition-colors hover:text-bl-acc">
+            ← 全部摄影 / all photos
           </Link>
-          <p className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00] mt-8 mb-6">
-            [ ALBUM — {dayjs(post.date).format("YYYY.MM.DD")} ]
-          </p>
-          <h1 className="font-serif-sc font-black text-3xl md:text-5xl leading-tight tracking-tight">
-            {post.title}
-          </h1>
-          {post.summary && (
-            <p className="mt-6 text-sm leading-loose text-current/60 max-w-xl">{post.summary}</p>
-          )}
+          <p className="mt-8 mb-5 font-mono text-xs text-bl-acc">{dayjs(post.date).format("YYYY.MM.DD")}</p>
+          <h1 className="text-3xl font-bold leading-tight tracking-tight md:text-[44px]">{post.title}</h1>
+          {post.summary && <p className="mt-6 max-w-xl text-[15px] leading-[1.8] text-bl-soft">{post.summary}</p>}
         </header>
 
         <article className="notion-content pb-8">

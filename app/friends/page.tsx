@@ -11,7 +11,7 @@ export default function FriendsPage() {
       slug="friends"
       no="06"
       zh="友链"
-      en="FRIENDS"
+      en="Friends"
       desc="朋友们的站点。"
       descEn="Sites of my friends."
     />

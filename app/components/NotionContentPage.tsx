@@ -20,7 +20,7 @@ export default async function NotionContentPage({
   descEn,
 }: {
   slug: string;
-  no: string;
+  no?: string;
   zh: string;
   en: string;
   desc?: string;

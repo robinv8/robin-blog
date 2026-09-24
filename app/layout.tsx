@@ -7,10 +7,10 @@ import { LangProvider } from "./components/LangProvider";
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.link),
   title: {
-    default: "robin 的博客 | 记录生活，记录成长",
-    template: "%s | robin 的博客",
+    default: "任裕斌 Robin Ren — 创始工程师，把 AI 产品从 0 做到 1",
+    template: "%s | Robin Ren",
   },
-  description: siteConfig.description,
+  description: "创始工程师，把 AI 产品从 0 做到 1。Apache Answer PMC 成员，前思否前端架构师。",
   keywords: siteConfig.keywords,
   alternates: {
     types: {
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "robin 的博客",
-    description: siteConfig.description,
+    title: "任裕斌 Robin Ren — Founding Engineer",
+    description: "创始工程师，把 AI 产品从 0 做到 1。Apache Answer PMC 成员，前思否前端架构师。",
     url: siteConfig.link,
     siteName: siteConfig.title,
     locale: siteConfig.language,
@@ -35,12 +35,9 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="scroll-smooth" suppressHydrationWarning>
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
       </head>
-      <body
-        className="antialiased bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 min-h-screen relative selection:bg-primary selection:text-white transition-colors duration-300"
-      >
+      <body className="relative min-h-screen bg-bl-bg text-bl-fg antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

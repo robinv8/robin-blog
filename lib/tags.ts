@@ -7,12 +7,13 @@ export function getTags(post: Post): string[] {
     return [];
 }
 
+/** Tag → number of distinct posts (language variants sharing a slug count once). */
 export function getAllTagsFromPosts(posts: Post[]): Record<string, number> {
-    const tagObj: Record<string, number> = {};
+    const slugsByTag: Record<string, Set<string>> = {};
     posts.forEach((post) => {
         getTags(post).forEach((tag) => {
-            tagObj[tag] = (tagObj[tag] ?? 0) + 1;
+            (slugsByTag[tag] ??= new Set()).add(post.slug ?? post.id);
         });
     });
-    return tagObj;
+    return Object.fromEntries(Object.entries(slugsByTag).map(([tag, slugs]) => [tag, slugs.size]));
 }

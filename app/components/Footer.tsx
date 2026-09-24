@@ -1,14 +1,21 @@
-import React from 'react';
+import Link from "next/link";
+import Toggles from "./Toggles";
+import { siteConfig } from "@/site.config";
 
 export default function Footer() {
   return (
-    <footer className="mt-20 pt-5 pb-10 border-t border-[#1B1B18]/15 dark:border-[#E8E6DF]/15 flex flex-col md:flex-row justify-between gap-2 font-mono text-[10px] tracking-[0.2em] text-current/35">
-      <p>© 2018 — 2026 ROBIN<span className="text-[#FF4D00]">®</span></p>
-      <p className="flex gap-5">
-        <a href="/feed" className="u-link hover:text-[#FF4D00] transition-colors">RSS</a>
-        <a href="/sitemap.xml" className="u-link hover:text-[#FF4D00] transition-colors">SITEMAP</a>
-        <span>DESIGNED & BUILT WITH AGENTS · CC BY-SA 4.0</span>
-      </p>
+    <footer className="mt-24 flex flex-col justify-between gap-3 border-t border-bl-line pt-7 pb-16 font-mono text-xs text-bl-muted md:flex-row">
+      <span>
+        © 2014–{new Date().getFullYear()} Robin Ren ·{" "}
+        <a href={`mailto:${siteConfig.email}`} className="hover:text-bl-fg transition-colors">
+          {siteConfig.email}
+        </a>
+      </span>
+      <div className="flex gap-5">
+        <Toggles />
+        <Link href="/feed" className="hover:text-bl-fg transition-colors">rss</Link>
+        <a href="/sitemap.xml" className="hover:text-bl-fg transition-colors">sitemap</a>
+      </div>
     </footer>
   );
 }

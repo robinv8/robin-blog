@@ -1,6 +1,6 @@
-import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import Header from '../components/Header';
+import SiteHeader from '../components/Header';
 import Footer from '../components/Footer';
 import Reveal from '../components/Reveal';
 import { PageShell, PageHero } from '../components/Page';
@@ -9,58 +9,56 @@ import { getAllPosts } from '@/lib/notion';
 import { Post } from '@/schema/post';
 import dayjs from 'dayjs';
 
+export const metadata: Metadata = {
+  title: '摄影',
+  description: '用镜头探索世界，把瞬间装订成册。',
+};
+
 export default async function Photography() {
   const posts = (await getAllPosts({ onlyPhotography: true })) || [];
 
   return (
     <PageShell>
-      <Header />
+      <SiteHeader />
       <PageHero
-        no="02"
-        zh="光影集"
-        en="PHOTOGRAPHY"
+        zh="摄影"
+        en="Photography"
         desc="用镜头探索世界，把瞬间装订成册。这里是光影的碎片与被时间冻结的记忆。"
         descEn="A collection of visual stories, fragments of light, and memories frozen in time."
       />
 
-      <main className="columns-1 sm:columns-2 md:columns-3 gap-6 space-y-6 pb-12">
+      <main className="columns-1 gap-6 space-y-6 sm:columns-2 md:columns-3">
         {posts.length === 0 && (
-          <div className="text-center py-20 text-current/50 col-span-full">
-            <p className="font-mono text-xs tracking-[0.2em]"><T zh="暂无照片 — 请检查 NOTION 配置" en="NO PHOTOS FOUND — PLEASE CHECK NOTION CONFIG" /></p>
-          </div>
+          <p className="py-20 text-center font-mono text-xs text-bl-muted">
+            <T zh="暂无照片，请检查 Notion 配置" en="No photos found. Check the Notion config." />
+          </p>
         )}
 
         {posts.map((post: Post, i: number) => (
           <Reveal key={post.id} delay={(i % 3) * 80} className="break-inside-avoid">
-            <Link href={`/photography/${encodeURIComponent(post.slug ?? '')}`} className="block group cursor-pointer border border-[#1B1B18]/20 dark:border-[#E8E6DF]/20 p-1.5 hover:border-[#FF4D00] transition-colors">
-              <div className="relative overflow-hidden">
-                {post.page_cover ? (
-                  <img
-                    alt={post.title || 'Photography'}
-                    className="w-full h-auto object-cover grayscale-[25%] group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-500"
-                    src={post.page_cover}
-                  />
-                ) : (
-                  <div className="w-full h-48 bg-[#1B1B18]/5 dark:bg-[#E8E6DF]/5 flex items-center justify-center">
-                    <span className="font-mono text-[10px] tracking-[0.3em] text-current/30">NO IMAGE</span>
-                  </div>
+            <Link
+              href={`/photography/${encodeURIComponent(post.slug ?? '')}`}
+              className="group block overflow-hidden rounded-lg border border-bl-line bg-bl-card transition-colors hover:border-bl-acc"
+            >
+              {post.page_cover ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  alt={post.title || 'Photography'}
+                  className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  src={post.page_cover}
+                />
+              ) : (
+                <div className="flex h-48 w-full items-center justify-center font-mono text-xs text-bl-muted">no image</div>
+              )}
+              <div className="flex items-baseline justify-between gap-3 border-t border-bl-line px-4 py-3">
+                <h3 className="truncate text-sm font-medium transition-colors group-hover:text-bl-acc">
+                  {post.title || 'Untitled'}
+                </h3>
+                {post.date && (
+                  <span className="shrink-0 font-mono text-xs text-bl-muted">{dayjs(post.date).format('YYYY.MM')}</span>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                  <h3 className="font-serif-sc font-bold text-[#FAFAF6] text-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    {post.title || 'Untitled'}
-                  </h3>
-                  {post.summary && (
-                    <p className="font-mono text-[10px] tracking-wider text-[#FAFAF6]/70 mt-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                      {post.summary}
-                    </p>
-                  )}
-                </div>
               </div>
             </Link>
-            <p className="mt-2 font-mono text-[9px] tracking-[0.2em] text-current/35 flex justify-between">
-              <span>FIG.{String(i + 1).padStart(2, '0')}</span>
-              {post.date && <span>{dayjs(post.date).format('YYYY.MM.DD')}</span>}
-            </p>
           </Reveal>
         ))}
       </main>

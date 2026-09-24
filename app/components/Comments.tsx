@@ -1,35 +1,32 @@
 "use client";
 
-import Giscus from "@giscus/react";
+import Giscus, { type GiscusProps } from "@giscus/react";
 import { useTheme } from "next-themes";
 import { siteConfig } from "../../site.config";
 
 export default function Comments() {
-    const { theme } = useTheme();
+    const { resolvedTheme } = useTheme();
+    const g = siteConfig.comment.giscusConfig;
 
-    // Cast siteConfig to any to bypass type checks if necessary, or assume siteConfig structure matches
-    const config = siteConfig as any;
-    const giscusConfig = config.comment?.giscusConfig;
-
-    if (!giscusConfig || !giscusConfig.repo) {
+    if (!g.repo) {
         return null;
     }
 
     return (
-        <div className="mt-10 py-8 border-t border-slate-200 dark:border-slate-800">
+        <div className="border-t border-bl-line pt-10">
             <Giscus
                 id="comments"
-                repo={giscusConfig.repo}
-                repoId={giscusConfig.repoId}
-                category={giscusConfig.category}
-                categoryId={giscusConfig.categoryId}
-                mapping={giscusConfig.mapping}
-                reactionsEnabled={giscusConfig.reactionsEnabled}
-                emitMetadata={giscusConfig.emitMetadata}
-                inputPosition={giscusConfig.inputPosition}
-                theme={theme === "dark" ? "transparent_dark" : "light"}
-                lang={giscusConfig.lang}
-                loading={giscusConfig.loading}
+                repo={g.repo as GiscusProps["repo"]}
+                repoId={g.repoId}
+                category={g.category}
+                categoryId={g.categoryId}
+                mapping={g.mapping as GiscusProps["mapping"]}
+                reactionsEnabled={g.reactionsEnabled as GiscusProps["reactionsEnabled"]}
+                emitMetadata={g.emitMetadata as GiscusProps["emitMetadata"]}
+                inputPosition={g.inputPosition as GiscusProps["inputPosition"]}
+                theme={resolvedTheme === "dark" ? "transparent_dark" : "light"}
+                lang={g.lang}
+                loading={g.loading as GiscusProps["loading"]}
             />
         </div>
     );

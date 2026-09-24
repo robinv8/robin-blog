@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
-import Link from "next/link";
-import dayjs from "dayjs";
+import { useMemo, useState } from "react";
 import { Post } from "@/schema/post";
 import { getTags } from "@/lib/tags";
 import { postsForLang } from "@/lib/i18n";
 import { useLang } from "../components/LangProvider";
+import PostRow from "../components/PostRow";
 
 export default function SearchClient({ posts }: { posts: Post[] }) {
   const [keyword, setKeyword] = useState("");
   const { lang } = useLang();
+  const isEn = lang === "en";
   const langPosts = useMemo(() => postsForLang(posts, lang), [posts, lang]);
 
   const results = useMemo(() => {
@@ -25,48 +25,35 @@ export default function SearchClient({ posts }: { posts: Post[] }) {
   }, [keyword, langPosts]);
 
   return (
-    <div className="pb-12">
-      <input
-        type="text"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-        placeholder={lang === "en" ? "SEARCH TITLE, SUMMARY OR TAG…" : "搜索文章标题、摘要或标签…"}
-        autoFocus
-        className="w-full bg-transparent border-b-2 border-[#1B1B18] dark:border-[#E8E6DF] focus:border-[#FF4D00] dark:focus:border-[#FF4D00] outline-none font-serif-sc font-bold text-2xl md:text-3xl py-4 mb-4 placeholder:text-current/25 transition-colors"
-      />
+    <div>
+      <label className="mb-4 flex items-center gap-3 rounded-lg border border-bl-line bg-bl-panel px-5 py-4 font-mono text-[15px] transition-colors focus-within:border-bl-acc">
+        <span className="shrink-0 whitespace-nowrap text-bl-acc">$ grep</span>
+        <input
+          type="text"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          placeholder={isEn ? "title, summary or tag…" : "标题、摘要或标签…"}
+          aria-label={isEn ? "Search posts" : "搜索文章"}
+          autoFocus
+          className="w-full bg-transparent outline-none placeholder:text-bl-muted"
+        />
+      </label>
 
-      <p className="font-mono text-[10px] tracking-[0.25em] text-current/40 mb-6">
-        [ {results.length} {lang === "en" ? "POSTS" : "篇文章"} ]
+      <p className="mb-6 font-mono text-xs text-bl-muted">
+        {results.length} {isEn ? "matches" : "篇匹配"}
       </p>
 
-      {results.map((post) => (
-        <Link
-          key={post.id}
-          href={`/posts/${post.slug}`}
-          className="group grid grid-cols-[auto_1fr_auto] items-baseline gap-4 md:gap-8 py-5 border-b border-[#1B1B18]/10 dark:border-[#E8E6DF]/10 -mx-3 px-3 transition-colors duration-200 hover:bg-[#FF4D00]"
-        >
-          <span className="font-mono text-[10px] tracking-[0.2em] text-current/40 group-hover:text-[#FAFAF6]/70 transition-colors">
-            {dayjs(post.date).format("YYYY.MM.DD")}
-          </span>
-          <span className="min-w-0">
-            <h4 className="font-serif-sc font-bold text-base md:text-xl leading-snug group-hover:text-[#FAFAF6] transition-colors truncate">
-              {post.title}
-            </h4>
-            {post.summary && (
-              <p className="text-xs text-current/45 group-hover:text-[#FAFAF6]/70 line-clamp-1 mt-1.5 transition-colors">
-                {post.summary}
-              </p>
-            )}
-          </span>
-          <span className="font-mono text-[10px] tracking-[0.2em] text-current/30 group-hover:text-[#FAFAF6] transition-colors">
-            →
-          </span>
-        </Link>
-      ))}
+      <ul>
+        {results.map((post, i) => (
+          <li key={post.id}>
+            <PostRow post={post} first={i === 0} />
+          </li>
+        ))}
+      </ul>
 
       {results.length === 0 && (
-        <p className="font-mono text-xs tracking-[0.2em] text-current/50 py-16 text-center">
-          {lang === "en" ? `NO RESULTS FOR "${keyword}"` : `没有找到与「${keyword}」相关的文章`}
+        <p className="border-y border-bl-line py-16 text-center text-sm text-bl-muted">
+          {isEn ? `No results for "${keyword}"` : `没有找到与「${keyword}」相关的文章`}
         </p>
       )}
     </div>

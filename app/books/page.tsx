@@ -11,7 +11,7 @@ export default function BooksPage() {
       slug="books"
       no="04"
       zh="书架"
-      en="BOOKSHELF"
+      en="Bookshelf"
       desc="读过的与在读的。"
       descEn="Books I have read and am reading."
     />

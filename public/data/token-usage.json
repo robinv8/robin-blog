@@ -1,0 +1,58 @@
+{
+  "updatedAt": "2026-08-24T08:00:00.000Z",
+  "source": "ccusage",
+  "note": "Grok session usage is cumulative per turn; ccusage may over-count Grok versus a last-snapshot sum.",
+  "months": [
+    {
+      "period": "2026-08",
+      "inputTokens": 138266509,
+      "outputTokens": 15122321,
+      "cacheCreationTokens": 73203,
+      "cacheReadTokens": 3154908647,
+      "totalTokens": 3308370680,
+      "costUsd": 1686.47,
+      "agents": [
+        {
+          "name": "Grok",
+          "inputTokens": 119992782,
+          "outputTokens": 12656537,
+          "cacheReadTokens": 2759295872,
+          "totalTokens": 2891945191,
+          "costUsd": 1537.58
+        },
+        {
+          "name": "Kimi",
+          "inputTokens": 7891187,
+          "outputTokens": 1787501,
+          "cacheReadTokens": 280394142,
+          "totalTokens": 290072830,
+          "costUsd": 46.28
+        },
+        {
+          "name": "Codex",
+          "inputTokens": 6087133,
+          "outputTokens": 400607,
+          "cacheReadTokens": 80899200,
+          "totalTokens": 87386940,
+          "costUsd": 72.9
+        },
+        {
+          "name": "Claude",
+          "inputTokens": 4182683,
+          "outputTokens": 275492,
+          "cacheReadTokens": 34251593,
+          "totalTokens": 38782971,
+          "costUsd": 29.44
+        },
+        {
+          "name": "pi-agent",
+          "inputTokens": 112724,
+          "outputTokens": 2184,
+          "cacheReadTokens": 67840,
+          "totalTokens": 182748,
+          "costUsd": 0.26
+        }
+      ]
+    }
+  ]
+}

@@ -11,7 +11,7 @@ export default function AboutPage() {
       slug="about"
       no="05"
       zh="关于"
-      en="ABOUT"
+      en="About"
       desc="认识一下我。"
       descEn="A little bit about me."
     />

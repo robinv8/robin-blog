@@ -1,10 +1,9 @@
-import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/notion";
 import { getAllTagsFromPosts } from "@/lib/tags";
 import { Post } from "@/schema/post";
-import Header from "../components/Header";
+import SiteHeader from "../components/Header";
 import Footer from "../components/Footer";
 import { PageShell, PageHero } from "../components/Page";
 
@@ -20,35 +19,31 @@ export default async function TagsPage() {
 
   return (
     <PageShell>
-      <Header />
+      <SiteHeader />
       <PageHero
-        no="07"
         zh="标签"
-        en="TAGS"
+        en="Tags"
         desc={`共 ${sortedTags.length} 个标签。`}
         descEn={`${sortedTags.length} tags in total.`}
       />
 
-      <main className="pb-12">
+      <main>
         {sortedTags.length > 0 ? (
-          <div className="flex flex-wrap gap-x-8 gap-y-4">
+          <ul className="flex flex-wrap gap-2.5">
             {sortedTags.map(([tag, count]) => (
-              <Link
-                key={tag}
-                href={`/tags/${encodeURIComponent(tag)}`}
-                className="group inline-flex items-baseline gap-2"
-              >
-                <span className="font-serif-sc font-bold text-lg group-hover:text-[#FF4D00] transition-colors">
-                  #{tag}
-                </span>
-                <span className="font-mono text-[10px] tracking-[0.2em] text-current/35 group-hover:text-[#FF4D00] transition-colors">
-                  ({count})
-                </span>
-              </Link>
+              <li key={tag}>
+                <Link
+                  href={`/tags/${encodeURIComponent(tag)}`}
+                  className="group inline-flex items-baseline gap-2 rounded border border-bl-line px-3.5 py-2 font-mono text-[13px] transition-colors hover:border-bl-acc"
+                >
+                  <span className="transition-colors group-hover:text-bl-acc">#{tag}</span>
+                  <span className="text-xs text-bl-muted">{count}</span>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         ) : (
-          <p className="font-mono text-xs tracking-[0.2em] text-current/50">暂无标签 / NO TAGS</p>
+          <p className="border-y border-bl-line py-10 text-center text-sm text-bl-muted">暂无标签 / No tags yet.</p>
         )}
       </main>
 

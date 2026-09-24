@@ -33,7 +33,7 @@ export default function Reveal({
   return (
     <div
       ref={ref}
-      className={className}
+      className={`bl-reveal ${className}`}
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "none" : "translateY(24px)",

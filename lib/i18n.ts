@@ -18,8 +18,15 @@ export function getPostLang(post: Post): Lang {
   return /[\u4e00-\u9fff]/.test(title) ? 'zh' : 'en';
 }
 
-/** Filter posts for a given language. Falls back to all posts when none match. */
+/** One post per slug, preferring the variant in `lang`; order follows the first variant of each slug. */
 export function postsForLang(posts: Post[], lang: Lang): Post[] {
-  const filtered = posts.filter((p) => getPostLang(p) === lang);
-  return filtered.length > 0 ? filtered : posts;
+  const bySlug = new Map<string, Post>();
+  for (const post of posts) {
+    const key = post.slug ?? post.id;
+    const current = bySlug.get(key);
+    if (!current || (getPostLang(current) !== lang && getPostLang(post) === lang)) {
+      bySlug.set(key, post);
+    }
+  }
+  return [...bySlug.values()];
 }

@@ -1,7 +1,7 @@
 export const siteConfig = {
     title: 'Robin Blog',
     author: 'Robin',
-    email: 'robin@rnode.me',
+    email: 'hello@robinren.me',
     description: 'Recording life and growth',
     language: 'zh-CN',
     link: 'https://robinren.me',

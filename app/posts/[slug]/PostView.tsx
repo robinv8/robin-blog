@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import Header from "../../components/Header";
+import SiteHeader from "../../components/Header";
 import Comments from "../../components/Comments";
 import Footer from "../../components/Footer";
 import { PageShell } from "../../components/Page";
@@ -34,6 +34,7 @@ export default function PostView({
   olderPost?: AdjacentPost | null;
 }) {
   const { lang } = useLang();
+  const isEn = lang === "en";
 
   const variant =
     variants.find((v) => getPostLang(v.post) === lang) ||
@@ -51,87 +52,56 @@ export default function PostView({
 
   return (
     <PageShell>
-      <Header />
+      <SiteHeader />
 
-      <main className="max-w-3xl mx-auto pt-14 md:pt-20 xl:max-w-none xl:flex xl:gap-12 xl:items-start">
-        <div className="xl:flex-1 xl:min-w-0 xl:max-w-3xl xl:mx-auto">
-          {/* Article header */}
-          <header className="mb-12 pb-10 border-b border-[#1B1B18]/15 dark:border-[#E8E6DF]/15">
-            <Link href="/" className="u-link font-mono text-[11px] tracking-[0.25em] text-current/50 hover:text-[#FF4D00] transition-colors">
-              {lang === "en" ? "← BACK" : "← 返回"}
+      <main className="mx-auto max-w-3xl pt-14 md:pt-20 xl:mx-0 xl:flex xl:max-w-none xl:items-start xl:gap-12">
+        <div className="xl:mx-auto xl:min-w-0 xl:max-w-3xl xl:flex-1">
+          <header className="mb-12 border-b border-bl-line pb-10">
+            <Link href="/posts" className="font-mono text-xs text-bl-muted hover:text-bl-acc transition-colors">
+              {isEn ? "← all posts" : "← 全部文章"}
             </Link>
-            <p className="font-mono text-[10px] tracking-[0.3em] text-[#FF4D00] mt-8 mb-6">
-              [ POST — {dayjs(post.date).format("YYYY.MM.DD")} ]
-            </p>
-            <h1 className="font-serif-sc font-black text-3xl md:text-5xl leading-tight tracking-tight">
-              {post.title}
-            </h1>
-            {post.summary && (
-              <p className="mt-6 text-sm leading-loose text-current/60 max-w-xl">{post.summary}</p>
-            )}
-            <div className="flex flex-wrap items-center gap-4 mt-6">
+            <p className="mt-8 mb-5 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-bl-muted">
+              <time className="text-bl-acc">{dayjs(post.date).format("YYYY.MM.DD")}</time>
               {tags.map((t) => (
-                <Link
-                  key={t}
-                  href={`/tags/${encodeURIComponent(t)}`}
-                  className="u-link font-mono text-[10px] tracking-[0.2em] text-current/40 hover:text-[#FF4D00] transition-colors"
-                >
+                <Link key={t} href={`/tags/${encodeURIComponent(t)}`} className="hover:text-bl-acc transition-colors">
                   #{t}
                 </Link>
               ))}
-              {hasOtherLang && (
-                <span className="font-mono text-[10px] tracking-[0.2em] text-current/40">
-                  · {lang === "en" ? "中文版见右上角语言开关" : "EN version via the language switch above"}
-                </span>
-              )}
-            </div>
+              {hasOtherLang && <span>· {isEn ? "中文版：切换语言" : "EN version: switch language"}</span>}
+            </p>
+            <h1 className="text-3xl font-bold leading-tight tracking-tight md:text-[44px]">{post.title}</h1>
+            {post.summary && <p className="mt-6 max-w-xl text-[15px] leading-[1.8] text-bl-soft">{post.summary}</p>}
           </header>
 
-          {/* Notion content */}
           <article className="notion-content pb-8">
             <NotionPageRenderer recordMap={recordMap} />
           </article>
 
-          {/* Prev / Next */}
           {(olderPost || newerPost) && (
-            <nav className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#1B1B18]/15 dark:bg-[#E8E6DF]/15 border border-[#1B1B18]/15 dark:border-[#E8E6DF]/15 mb-10">
+            <nav className="mb-12 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-bl-line bg-bl-line sm:grid-cols-2">
               {olderPost ? (
-                <Link
-                  href={`/posts/${encodeURIComponent(olderPost.slug)}`}
-                  className="group bg-[#FAFAF6] dark:bg-[#131311] p-5"
-                >
-                  <span className="font-mono text-[10px] tracking-[0.25em] text-current/40 group-hover:text-[#FF4D00] transition-colors">
-                    {lang === "en" ? "← OLDER" : "← 上一篇"}
-                  </span>
-                  <p className="mt-3 font-serif-sc font-bold text-sm group-hover:text-[#FF4D00] transition-colors line-clamp-1">
-                    {olderPost.title}
-                  </p>
+                <Link href={`/posts/${encodeURIComponent(olderPost.slug)}`} className="group bg-bl-card p-6 transition-colors hover:bg-bl-card-hover">
+                  <span className="font-mono text-xs text-bl-muted">{isEn ? "← older" : "← 上一篇"}</span>
+                  <p className="mt-2 line-clamp-1 font-medium transition-colors group-hover:text-bl-acc">{olderPost.title}</p>
                 </Link>
               ) : (
-                <span className="hidden sm:block bg-[#FAFAF6] dark:bg-[#131311]" />
+                <span className="hidden bg-bl-card sm:block" />
               )}
-              {newerPost && (
-                <Link
-                  href={`/posts/${encodeURIComponent(newerPost.slug)}`}
-                  className="group bg-[#FAFAF6] dark:bg-[#131311] p-5 text-right"
-                >
-                  <span className="font-mono text-[10px] tracking-[0.25em] text-current/40 group-hover:text-[#FF4D00] transition-colors">
-                    {lang === "en" ? "NEWER →" : "下一篇 →"}
-                  </span>
-                  <p className="mt-3 font-serif-sc font-bold text-sm group-hover:text-[#FF4D00] transition-colors line-clamp-1">
-                    {newerPost.title}
-                  </p>
+              {newerPost ? (
+                <Link href={`/posts/${encodeURIComponent(newerPost.slug)}`} className="group bg-bl-card p-6 text-right transition-colors hover:bg-bl-card-hover">
+                  <span className="font-mono text-xs text-bl-muted">{isEn ? "newer →" : "下一篇 →"}</span>
+                  <p className="mt-2 line-clamp-1 font-medium transition-colors group-hover:text-bl-acc">{newerPost.title}</p>
                 </Link>
+              ) : (
+                <span className="hidden bg-bl-card sm:block" />
               )}
             </nav>
           )}
 
-          <div className="border-t border-[#1B1B18]/15 dark:border-[#E8E6DF]/15 pt-10">
-            <Comments />
-          </div>
+          <Comments />
         </div>
 
-        <aside className="hidden xl:block w-64 shrink-0 sticky top-8">
+        <aside className="sticky top-8 hidden w-64 shrink-0 xl:block">
           <TableOfContents recordMap={recordMap} pageId={post.id} />
         </aside>
       </main>
