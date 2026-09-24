@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = decodeSlug(rawSlug);
   const posts = (await getAllPosts({ onlyPost: true })) as Post[];
   const variants = posts?.filter((t) => t.slug === slug) || [];
-  const post = variants[0];
+  const post = variants.find((t) => getPostLang(t) === "zh") ?? variants[0];
 
   if (!post) {
     return { title: "Post not found" };
