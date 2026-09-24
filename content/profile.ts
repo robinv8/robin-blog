@@ -53,52 +53,6 @@ export const profile = {
 
 export const works: Work[] = [
   {
-    slug: "mindmux",
-    name: { zh: "MindMux", en: "MindMux" },
-    org: { zh: "MindFly Lab · Founding Engineer", en: "MindFly Lab · Founding Engineer" },
-    status: { zh: "早期试用", en: "early access" },
-    desc: {
-      zh: "Local-first AI 工作台。项目讨论沉淀为可移植的 Markdown brain，再派发给 Claude Code、Codex 等 coding agents，让上下文跨会话、跨模型留下来。",
-      en: "A local-first AI workbench. Project discussions compile into a portable Markdown brain, then dispatch to coding agents like Claude Code and Codex — so context survives across sessions and models.",
-    },
-    stats: [
-      { value: "200+", label: { zh: "合并 PR", en: "PRs merged" } },
-      { value: "369", label: { zh: "应用提交", en: "app commits" } },
-      { value: "2026", label: { zh: "开始", en: "started" } },
-    ],
-    href: "https://mindmux.ai",
-    period: { zh: "2026 — 至今", en: "2026 — now" },
-    case: {
-      background: {
-        zh: "和 AI 讨论项目时，想清楚的东西散落在一次次会话里，换个模型、换个工具就要从头讲起。MindMux 想让这些上下文留下来：讨论编译成仓库里的 Markdown brain，再交给 coding agents 去执行。",
-        en: "When you think a project through with AI, the conclusions scatter across sessions; switch models or tools and you start over. MindMux keeps that context: discussions compile into a Markdown brain in the repo, then get handed to coding agents to execute.",
-      },
-      did: [
-        {
-          zh: "作为 Founding Engineer 从零参与产品研发，是核心应用仓库的主力贡献者。",
-          en: "Building the product from scratch as founding engineer; a main contributor to the core app repo.",
-        },
-        {
-          zh: "macOS 桌面应用：项目讨论、brain 编译，以及把任务派发给 Claude Code、Codex 等 agents。",
-          en: "The macOS desktop app: project discussions, brain compilation, and dispatching tasks to agents like Claude Code and Codex.",
-        },
-        {
-          zh: "同时负责官网与文档站 mindmux.ai/docs 的相关开发。",
-          en: "Also work on the website and docs at mindmux.ai/docs.",
-        },
-      ],
-      results: [
-        { zh: "产品已开放早期试用，源码在逐步开源。", en: "Now in early access; source is being opened up step by step." },
-        { zh: "在 mindmuxai 组织下提交 234 个 PR，其中 216 个已合并。", en: "234 PRs across the mindmuxai org, 216 of them merged." },
-      ],
-    },
-    links: [
-      { label: "mindmux.ai", href: "https://mindmux.ai" },
-      { label: "docs", href: "https://mindmux.ai/docs" },
-      { label: "GitHub", href: "https://github.com/mindmuxai/mindmux" },
-    ],
-  },
-  {
     slug: "brain-md",
     name: { zh: "brain.md", en: "brain.md" },
     org: { zh: "开源 · Apache-2.0", en: "Open source · Apache-2.0" },

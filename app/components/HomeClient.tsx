@@ -123,9 +123,9 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
             aside={<Link href="/projects" className="hover:text-bl-acc transition-colors">{S.allWork}</Link>}
           />
         </Reveal>
-        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-bl-line bg-bl-line md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-bl-line bg-bl-line md:grid-cols-2 lg:grid-cols-3">
           {works.map((w) => (
-            <article key={w.slug} className="group relative flex flex-col gap-3.5 bg-bl-card p-7 transition-colors hover:bg-bl-card-hover md:p-8">
+            <article key={w.slug} className="group relative flex flex-col gap-3.5 bg-bl-card p-7 md:odd:last:col-span-2 lg:odd:last:col-span-1 transition-colors hover:bg-bl-card-hover md:p-8">
               <div className="flex justify-between gap-4 font-mono text-xs text-bl-muted">
                 <span>{w.org[lang]}</span>
                 <span className="shrink-0 text-bl-acc">● {w.status[lang]}</span>
@@ -144,9 +144,9 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
                   </div>
                 ))}
               </div>
-              <div className="flex justify-between font-mono text-xs text-bl-muted">
-                <span className="transition-colors group-hover:text-bl-acc">{lang === 'en' ? 'read case →' : '查看案例 →'}</span>
-                <a href={w.href} target="_blank" rel="noopener noreferrer" className="relative z-10 hover:text-bl-acc transition-colors">
+              <div className="flex justify-between gap-4 font-mono text-xs text-bl-muted">
+                <span className="shrink-0 transition-colors group-hover:text-bl-acc">{lang === 'en' ? 'read case →' : '查看案例 →'}</span>
+                <a href={w.href} target="_blank" rel="noopener noreferrer" className="relative z-10 truncate hover:text-bl-acc transition-colors">
                   {w.href.replace(/^https?:\/\//, '')} ↗
                 </a>
               </div>

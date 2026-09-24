@@ -16,13 +16,13 @@ function formatUsd(n: number): string {
   return `$${n.toFixed(2)}`;
 }
 
-export default function ProjectsLog({ usage }: { usage: TokenUsageFile | null }) {
+export default function ProjectsLog({ usage, notesShown }: { usage: TokenUsageFile | null; notesShown: boolean }) {
   const { lang } = useLang();
   const latest = usage?.months[0];
 
   return (
     <section className="mb-8">
-      <SectionLabel no="03" zh="进行中" en="in progress" />
+      <SectionLabel no={notesShown ? "04" : "03"} zh="进行中" en="in progress" />
       <ul className="flex flex-col gap-6">
         {localProjects.map((project) => (
           <li key={project.slug} className="rounded-lg border border-bl-line bg-bl-card p-6 md:p-10">
