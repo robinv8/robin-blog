@@ -173,6 +173,62 @@ body {
   border-color: var(--bl-acc);
 }
 
+/* ============ 文章详情 ============ */
+
+.post-body .notion {
+  font-size: 16.5px;
+}
+.post-body .notion-page {
+  counter-reset: bl-sec;
+}
+.post-body .notion-h1 { font-size: 1.5em; }
+.post-body .notion-h2 { font-size: 1.3em; }
+.post-body .notion-h3 { font-size: 1.1em; font-weight: 600; }
+.post-body[data-top="2"] .notion-h2 { font-size: 1.5em; }
+.post-body[data-top="3"] .notion-h3 { font-size: 1.3em; font-weight: 700; }
+
+.post-body[data-top="1"] .notion-page > .notion-h1,
+.post-body[data-top="2"] .notion-page > .notion-h2,
+.post-body[data-top="3"] .notion-page > .notion-h3 {
+  margin-top: 2.4em;
+  line-height: 1.4;
+}
+.post-body[data-top="1"] .notion-page > .notion-h1::before,
+.post-body[data-top="2"] .notion-page > .notion-h2::before,
+.post-body[data-top="3"] .notion-page > .notion-h3::before {
+  counter-increment: bl-sec;
+  content: counter(bl-sec, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.6rem;
+  color: var(--bl-acc);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.post-body .notion-list li::marker {
+  color: var(--bl-acc);
+}
+.post-body .notion-text b,
+.post-body .notion-list b {
+  color: var(--bl-fg);
+}
+.post-body .notion-inline-code {
+  color: var(--bl-fg);
+  font-size: 0.82em;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+.post-body .notion-asset-wrapper img {
+  border-radius: 8px;
+}
+.post-body .notion-asset-caption {
+  font-size: 11px;
+  text-align: left;
+  padding-top: 0.6em;
+}
+
 /* 隐藏 react-notion-x 渲染数据库行时带出的属性面板（状态/标签/类型等），
    这些信息页面头部已自行展示；!important 用于压过后加载的 react-notion-x 样式 */
 .notion-collection-page-properties {

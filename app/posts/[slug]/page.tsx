@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getPostBlocks, getAllPosts } from "@/lib/notion";
 import { siteConfig } from "../../../site.config";
 import { Post } from "@/schema/post";
+import { getPostLang } from "@/lib/i18n";
 import PostView from "./PostView";
 
 type Props = {
@@ -81,8 +82,11 @@ export default async function BlogPost({ params }: Props) {
   const olderSlug = idx >= 0 && idx < uniqueSlugs.length - 1 ? uniqueSlugs[idx + 1] : null;
   const summaryOf = (s: string | null) => {
     if (!s) return null;
-    const p = posts.find((t) => t.slug === s);
-    return p ? { slug: s, title: p.title ?? "" } : null;
+    const matches = posts.filter((t) => t.slug === s);
+    if (!matches.length) return null;
+    const zh = matches.find((t) => getPostLang(t) === "zh") ?? matches[0];
+    const en = matches.find((t) => getPostLang(t) === "en") ?? zh;
+    return { slug: s, title: { zh: zh.title ?? "", en: en.title ?? "" } };
   };
 
   return (

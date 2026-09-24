@@ -13,7 +13,7 @@ export default function Comments() {
     }
 
     return (
-        <div className="border-t border-bl-line pt-10">
+        <div className="rounded-lg border border-bl-line bg-bl-card p-5 md:p-7">
             <Giscus
                 id="comments"
                 repo={g.repo as GiscusProps["repo"]}

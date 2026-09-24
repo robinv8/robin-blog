@@ -7,7 +7,7 @@ import { LangProvider } from "./components/LangProvider";
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.link),
   title: {
-    default: "任裕斌 Robin Ren — 创始工程师，把 AI 产品从 0 做到 1",
+    default: "Robin Ren — 创始工程师，把 AI 产品从 0 做到 1",
     template: "%s | Robin Ren",
   },
   description: "创始工程师，把 AI 产品从 0 做到 1。Apache Answer PMC 成员，前思否前端架构师。",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "任裕斌 Robin Ren — Founding Engineer",
+    title: "Robin Ren — Founding Engineer",
     description: "创始工程师，把 AI 产品从 0 做到 1。Apache Answer PMC 成员，前思否前端架构师。",
     url: siteConfig.link,
     siteName: siteConfig.title,

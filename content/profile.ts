@@ -27,8 +27,8 @@ export type Role = {
 };
 
 export const profile = {
-  name: { zh: "任裕斌", en: "Robin Ren" },
-  subtitle: { zh: "Robin Ren — Founding Engineer", en: "任裕斌 — Founding Engineer" },
+  name: { zh: "Robin Ren", en: "Robin Ren" },
+  subtitle: { zh: "Founding Engineer · Hangzhou", en: "Founding Engineer · Hangzhou" },
   headline: {
     zh: { before: "创始工程师，把 ", accent: "AI 产品", after: "从 0 做到 1。" },
     en: { before: "Founding engineer building ", accent: "AI products", after: " from zero to one." },

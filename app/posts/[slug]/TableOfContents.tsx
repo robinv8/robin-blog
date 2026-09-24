@@ -1,59 +1,47 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { getPageTableOfContents } from "notion-utils";
-import type { ExtendedRecordMap } from "notion-types";
 import { useLang } from "../../components/LangProvider";
-
-const levelStyles: Record<number, string> = {
-  1: "pl-3",
-  2: "pl-6",
-  3: "pl-9 text-[11px]",
-};
+import type { Heading } from "./postMeta";
 
 const blockSelector = (id: string) => `.notion-block-${id.replaceAll("-", "")}`;
 
-export default function TableOfContents({
-  recordMap,
-  pageId,
-}: {
-  recordMap: ExtendedRecordMap;
-  pageId: string;
-}) {
+export default function TableOfContents({ headings, articleId }: { headings: Heading[]; articleId: string }) {
   const { lang } = useLang();
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const nodes = useMemo(() => {
-    const page =
-      (recordMap.block[pageId] as any)?.value ??
-      (recordMap.block[pageId.replaceAll("-", "")] as any)?.value ??
-      (Object.values(recordMap.block)[0] as any)?.value;
-    if (!page) return [];
-    return getPageTableOfContents(page, recordMap as any).map((node: any) => {
-      const type = (recordMap.block[node.id] as any)?.value?.type;
-      const level = type === "sub_header" ? 2 : type === "sub_sub_header" ? 3 : 1;
-      return { id: node.id as string, text: node.text as string, level };
-    });
-  }, [recordMap, pageId]);
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+  const topLevel = useMemo(() => Math.min(...headings.map((h) => h.level)), [headings]);
+  const numbered = useMemo(() => {
+    let n = 0;
+    return headings.map((h) => ({ ...h, no: h.level === topLevel ? String(++n).padStart(2, "0") : null }));
+  }, [headings, topLevel]);
 
   useEffect(() => {
-    if (!nodes.length) return;
     const onScroll = () => {
       let current: string | null = null;
-      for (const node of nodes) {
-        const el = document.querySelector(blockSelector(node.id));
-        if (el && el.getBoundingClientRect().top <= 120) current = node.id;
+      for (const h of headings) {
+        const el = document.querySelector(blockSelector(h.id));
+        if (el && el.getBoundingClientRect().top <= 120) current = h.id;
       }
       setActiveId(current);
+
+      const article = document.getElementById(articleId);
+      if (article) {
+        const rect = article.getBoundingClientRect();
+        const readable = rect.height - window.innerHeight * 0.6;
+        const ratio = readable > 0 ? (window.innerHeight * 0.4 - rect.top) / readable : 1;
+        setProgress(Math.round(Math.min(1, Math.max(0, ratio)) * 100));
+      }
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [nodes]);
-
-  if (!nodes.length) return null;
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [headings, articleId]);
 
   const scrollTo = (id: string) => {
     const target = document.querySelector(blockSelector(id));
@@ -63,23 +51,38 @@ export default function TableOfContents({
   };
 
   return (
-    <nav className="max-h-[70vh] overflow-y-auto border-l border-bl-line font-mono text-xs">
-      <p className="mb-3 pl-3 text-bl-muted">{lang === "en" ? "contents" : "目录"}</p>
-      {nodes.map((node) => {
-        const active = node.id === activeId;
-        return (
-          <button
-            key={node.id}
-            onClick={() => scrollTo(node.id)}
-            title={node.text}
-            className={`-ml-px block w-full truncate border-l py-1.5 text-left transition-colors ${
-              active ? "border-bl-acc text-bl-acc" : "border-transparent text-bl-muted hover:text-bl-fg"
-            } ${levelStyles[node.level] ?? levelStyles[3]}`}
-          >
-            {node.text}
-          </button>
-        );
-      })}
+    <nav aria-label={lang === "en" ? "Table of contents" : "目录"} className="font-mono text-xs">
+      <p className="mb-3 text-bl-muted">{lang === "en" ? "contents" : "目录 contents"}</p>
+      {numbered.length > 0 && (
+        <div className="max-h-[60vh] overflow-y-auto">
+          {numbered.map((h) => {
+            const active = h.id === activeId;
+            return (
+              <button
+                key={h.id}
+                onClick={() => scrollTo(h.id)}
+                title={h.text}
+                aria-current={active ? "location" : undefined}
+                className={`flex w-full gap-2.5 border-l py-[7px] text-left transition-colors ${
+                  active ? "border-bl-acc text-bl-fg" : "border-bl-line text-bl-muted hover:text-bl-fg"
+                } ${h.no ? "pl-3" : "pl-8 text-[11px]"}`}
+              >
+                {h.no && <span className={active ? "text-bl-acc" : ""}>{h.no}</span>}
+                <span className={`line-clamp-2 font-sans leading-snug ${h.no ? "text-[13px]" : "text-xs"} ${active ? "font-semibold" : ""}`}>{h.text}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+      <div className="mt-5">
+        <div className="h-0.5 overflow-hidden rounded-full bg-bl-line">
+          <div className="h-full origin-left rounded-full bg-bl-acc transition-transform duration-150" style={{ transform: `scaleX(${progress / 100})` }} />
+        </div>
+        <p className="mt-2 flex justify-between text-[11px] text-bl-muted">
+          <span>{lang === "en" ? "progress" : "阅读进度"}</span>
+          <span className="text-bl-acc tabular-nums">{progress}%</span>
+        </p>
+      </div>
     </nav>
   );
 }
