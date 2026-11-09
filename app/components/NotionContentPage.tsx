@@ -41,7 +41,7 @@ export default async function NotionContentPage({
       <PageHero no={no} zh={zh} en={en} desc={desc} descEn={descEn} />
 
       <main className="max-w-3xl pb-12">
-        <article className="notion-content">
+        <article className={`notion-content${slug === "friends" ? " friends-content" : ""}`}>
           <NotionPageRenderer recordMap={blockMap} />
         </article>
       </main>

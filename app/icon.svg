@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    .mark { fill: #17181b; }
+    .dot { fill: #a2660c; }
+    @media (prefers-color-scheme: dark) {
+      .mark { fill: #e7e5df; }
+      .dot { fill: #e3b25a; }
+    }
+  </style>
+  <path class="mark" fill-rule="evenodd" d="M22 17h29c15.5 0 24 7.3 24 20 0 10.1-5.8 16.5-15.6 18.8L77 83H64L48 58H34v25H22V17Zm12 10v21h16c8.1 0 12.7-3.6 12.7-10.6S58.1 27 50 27H34Z"/>
+  <rect class="dot" x="79" y="75" width="8" height="8"/>
+</svg>

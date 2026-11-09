@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import NotionContentPage from "../components/NotionContentPage";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "友链",
 };

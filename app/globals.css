@@ -173,6 +173,76 @@ body {
   border-color: var(--bl-acc);
 }
 
+/* Friend entries remain ordinary Notion columns: image on the left, linked
+   heading and description on the right. Other Notion content stays untouched. */
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) {
+  align-items: center;
+  gap: clamp(20px, 4vw, 32px);
+  padding: 28px 0;
+  border-top: 1px solid var(--bl-line);
+  border-bottom: 1px solid var(--bl-line);
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) + .notion-row {
+  border-top: 0;
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) > .notion-column {
+  width: auto !important;
+  min-width: 0;
+  padding: 0;
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) > .notion-column:has(.notion-asset-wrapper-image) {
+  flex: 0 0 clamp(64px, 9vw, 88px);
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) > .notion-spacer {
+  display: none;
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) .notion-asset-wrapper-image {
+  margin: 0;
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) img {
+  display: block;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--bl-line);
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) .notion-asset-caption,
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) .notion-hash-link {
+  display: none;
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) .notion-h {
+  margin: 0 0 5px;
+  font-size: 18px;
+  line-height: 1.5;
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) .notion-h-title a {
+  color: var(--bl-fg);
+  border: 0;
+  text-decoration: none;
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) .notion-h-title a::after {
+  content: ' ↗';
+  color: var(--bl-acc);
+  font-size: 0.8em;
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) .notion-h-title a:hover {
+  color: var(--bl-acc);
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) .notion-h-title a:focus-visible {
+  outline: 2px solid var(--bl-acc);
+  outline-offset: 4px;
+}
+.friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) .notion-text {
+  padding: 0;
+  font-size: 14px;
+  line-height: 1.8;
+}
+@media (max-width: 640px) {
+  .friends-content .notion-row:has(> .notion-column .notion-asset-wrapper-image):has(> .notion-column .notion-h-title a) {
+    flex-direction: row;
+  }
+}
+
 /* ============ 文章详情 ============ */
 
 .post-body .notion {

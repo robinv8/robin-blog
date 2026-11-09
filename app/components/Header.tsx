@@ -42,8 +42,12 @@ export default function SiteHeader() {
   return (
     <header className="border-b border-bl-line font-mono text-xs text-bl-muted">
       <div className="flex h-16 items-center justify-between">
-        <Link href="/" onClick={() => setOpen(false)} className="font-bold text-bl-fg">
-          robin<span className="text-bl-acc">.</span>ren
+        <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-[9px] font-bold text-bl-fg">
+          <svg viewBox="0 0 100 100" className="h-[30px] w-[30px]" aria-hidden="true">
+            <path fill="currentColor" fillRule="evenodd" d="M22 17h29c15.5 0 24 7.3 24 20 0 10.1-5.8 16.5-15.6 18.8L77 83H64L48 58H34v25H22V17Zm12 10v21h16c8.1 0 12.7-3.6 12.7-10.6S58.1 27 50 27H34Z" />
+            <rect x="79" y="75" width="8" height="8" className="fill-bl-acc" />
+          </svg>
+          <span>robin<span className="text-bl-acc">.</span>ren</span>
         </Link>
         <nav className="flex items-center gap-4 md:gap-7">
           {NAV.map((n) => {
